@@ -89,21 +89,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dotsImage: {
-    width: '90%',
-    height: '100%',
+    // width: '90%',
+    // height: '100%',
+    flex: 1,
+    width: width * 0.7,
+    height: height * 0.9,
     alignItems: 'center',
     justifyContent: 'center',
   },
   dotsTextHeadLine: {
     color: '#111111',
     fontSize: 18,
-    marginTop: height * 0.1,
+    marginTop: 120,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   textSubTextContainer: {
     marginTop: 10,
-    justifyContent: 'center',
+    alignItems: 'center',
   },
   textSubText: {
     fontSize: 16,
@@ -111,7 +114,8 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   button: {
-    marginTop: 50,
+    marginTop: 30,
+    marginBottom: 10,
   },
 });
 
