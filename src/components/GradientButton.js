@@ -1,22 +1,43 @@
 import React from 'react';
-import {Dimensions, Text, Image, StyleSheet} from 'react-native';
+import {
+  Dimensions,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 let {width, height} = Dimensions.get('window');
-const GradientButton = ({colors, start, end, text, logoSource}) => {
+
+const GradientButton = ({
+  colors,
+  start,
+  end,
+  text,
+  logoSource,
+  style,
+  onPress,
+}) => {
   return (
-    <LinearGradient
-      colors={colors}
-      start={start}
-      end={end}
-      style={styles.buttonGradient}>
-      {logoSource && <Image source={logoSource} style={styles.logo} />}
-      <Text style={styles.buttonText}>{text}</Text>
-    </LinearGradient>
+    <TouchableOpacity style={[styles.buttonContainer, style]} onPress={onPress}>
+      <LinearGradient
+        colors={colors}
+        start={start}
+        end={end}
+        style={styles.buttonGradient}>
+        {logoSource && <Image source={logoSource} style={styles.logo} />}
+        <Text style={styles.buttonText}>{text}</Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   buttonGradient: {
     width: width * 0.88,
     height: 50,
