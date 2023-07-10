@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
   },
   textSubTextContainer: {
     marginTop: 10,
-    alignItems: 'center',
   },
   textSubText: {
     fontSize: 16,
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   button: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 10,
   },
 });
