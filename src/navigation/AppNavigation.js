@@ -5,6 +5,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import LogoScreen from '../screens/LogoScreen';
 import AllTasksScreen from '../screens/AllTasksScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
+import CalenderScreen from '../screens/CalenderScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,10 +28,15 @@ export default function AppNavigation() {
           options={{headerShown: false}}
           component={AllTasksScreen}
         /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Categories"
           options={{headerShown: false}}
           component={CategoriesScreen}
+        /> */}
+        <Stack.Screen
+          name="Calender"
+          options={{headerShown: false}}
+          component={CalenderScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

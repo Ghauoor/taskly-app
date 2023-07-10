@@ -46,7 +46,7 @@ const AllTasksScreen = () => {
 
     const checkedFillColor = isChecked
       ? // ? renderCheckedIcon()
-        'red'
+        '#A100FE'
       : unCheckedcolors[index % unCheckedcolors.length];
 
     return (
