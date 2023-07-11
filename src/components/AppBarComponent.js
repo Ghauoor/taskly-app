@@ -22,7 +22,7 @@ const AppBarComponent = ({
             onPress={handleToggleMenu}
             color="#161616"
             size={30}
-            style={{marginLeft: -8}} 
+            style={{marginLeft: -8}}
           />
         }
       />
@@ -45,6 +45,5 @@ const AppBarComponent = ({
     </Appbar.Header>
   );
 };
-
 
 export default AppBarComponent;
