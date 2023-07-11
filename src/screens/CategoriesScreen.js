@@ -32,7 +32,11 @@ const CategoriesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppBarComponent title="Categories" style={styles.appBar} />
+      <AppBarComponent
+        title="Categories"
+        style={styles.appBar}
+        showSearchIcon={true}
+      />
       <View style={styles.listContainer}>
         <FlatList
           data={categories}

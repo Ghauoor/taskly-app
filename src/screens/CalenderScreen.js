@@ -48,7 +48,11 @@ const CalendarScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppBarComponent title="Calendar" style={styles.appBar} />
+      <AppBarComponent
+        title="Calendar"
+        style={styles.appBar}
+        showSearchIcon={true}
+      />
       <View style={styles.dateContainer}>
         {/* Date  */}
         <Text style={styles.dateText}>{currentDate}</Text>

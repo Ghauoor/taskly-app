@@ -12,6 +12,8 @@ import SettingScreen from '../screens/AboutUsScreen';
 import Header from '../components/Header';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AboutUsScreen from '../screens/AboutUsScreen';
+import SettingSceen from '../screens/SettingSceen';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,28 +39,30 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        screenOptions={{
-          header: () => <CustomHeader />,
-          //headerTransparent: true,
-        }}>
+        screenOptions={({navigation, route}) => ({
+          header:
+            route.name === 'AboutUs'
+              ? () => <CustomHeader navigation={navigation} />
+              : null,
+        })}>
         {/* <Stack.Screen
           name="Welcome"
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           component={WelcomeScreen}
         /> */}
         {/* <Stack.Screen
           name="Logo"
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           component={LogoScreen}
         /> */}
         {/* <Stack.Screen
           name="AllTask"
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           component={AllTasksScreen}
         /> */}
         {/* <Stack.Screen
           name="Categories"
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           component={CategoriesScreen}
         /> */}
         {/* <Stack.Screen
@@ -66,7 +70,12 @@ export default function AppNavigation() {
           options={{ headerShown: false }}
           component={CalenderScreen}
         /> */}
-        <Stack.Screen name="AboutUs" component={SettingScreen} />
+        {/* <Stack.Screen name="AboutUs" component={AboutUsScreen} /> */}
+        <Stack.Screen
+          name="Settings"
+          options={{headerShown: false}}
+          component={SettingSceen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

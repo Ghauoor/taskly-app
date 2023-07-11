@@ -69,7 +69,11 @@ const AllTasksScreen = () => {
 
   return (
     <View style={styles.container}>
-      <AppBarComponent title="All Task Screen" style={styles.appBar} />
+      <AppBarComponent
+        title="All Task Screen"
+        style={styles.appBar}
+        showSearchIcon={true}
+      />
       <View style={styles.listContainer}>
         <FlatList
           data={tasks}

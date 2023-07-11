@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import AboutUsCard from '../components/AboutUsCard';
 
-const SettingScreen = () => {
+const AboutUsScreen = () => {
   return (
     <View style={styles.container}>
       <AboutUsCard
@@ -39,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SettingScreen;
+export default AboutUsScreen;

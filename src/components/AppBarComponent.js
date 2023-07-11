@@ -9,6 +9,7 @@ const AppBarComponent = ({
   handleSearch,
   title,
   style,
+  showSearchIcon, // New prop to control visibility of search icon
 }) => {
   return (
     <Appbar.Header
@@ -35,13 +36,15 @@ const AppBarComponent = ({
           marginLeft: 10,
         }}
       />
-      <Appbar.Action
-        icon="magnify"
-        onPress={handleSearch}
-        color="#161616"
-        size={30}
-        style={{padding: 8}}
-      />
+      {showSearchIcon && ( // Render the search icon if showSearchIcon is true
+        <Appbar.Action
+          icon="magnify"
+          onPress={handleSearch}
+          color="#161616"
+          size={30}
+          style={{padding: 8}}
+        />
+      )}
     </Appbar.Header>
   );
 };
