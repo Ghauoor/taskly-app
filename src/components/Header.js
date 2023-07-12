@@ -1,33 +1,49 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
-import {View, StyleSheet} from 'react-native';
+import {View} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-const Header = props => {
+const Header = ({
+  name,
+  onPress,
+  containerStyle,
+  iconStyle,
+  textStyle,
+  iconColor,
+}) => {
   const handleNavigation = () => {
-    if (props.onPress) {
-      props.onPress();
+    if (onPress) {
+      onPress();
     }
   };
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 15,
-        padding: 10,
-      }}>
-      <TouchableOpacity onPress={handleNavigation} style={{marginRight: 15}}>
-        <Icon name="arrowleft" size={30} color="#fff" />
+    <View style={{...styles.container, containerStyle}}>
+      <TouchableOpacity
+        onPress={handleNavigation}
+        style={{...styles.iconContainer, iconStyle}}>
+        <Icon name="arrowleft" size={30} color={iconColor} />
       </TouchableOpacity>
-      <Text style={{fontWeight: 'bold', fontSize: 25, color: '#fff'}}>
-        {props.name}
-      </Text>
+      <Text style={[styles.title, textStyle]}>{name}</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = {
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15,
+    padding: 10,
+  },
+  iconContainer: {
+    marginRight: 15,
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 25,
+    color: '#fff',
+  },
+};
 
 export default Header;

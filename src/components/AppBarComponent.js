@@ -1,5 +1,4 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import {Appbar, Menu} from 'react-native-paper';
 
 const AppBarComponent = ({
@@ -9,11 +8,17 @@ const AppBarComponent = ({
   handleSearch,
   title,
   style,
-  showSearchIcon, // New prop to control visibility of search icon
+  showSearchIcon,
 }) => {
   return (
     <Appbar.Header
-      style={[{elevation: 0, backgroundColor: 'transparent'}, style]}>
+      style={[
+        {
+          elevation: 0,
+          backgroundColor: 'transparent',
+        },
+        style,
+      ]}>
       <Menu
         visible={isMenuOpen}
         onDismiss={handleCloseMenu}

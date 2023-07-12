@@ -14,6 +14,7 @@ import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AboutUsScreen from '../screens/AboutUsScreen';
 import SettingSceen from '../screens/SettingSceen';
+import CreateTaskScreen from '../screens/CreateTaskScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,10 +72,15 @@ export default function AppNavigation() {
           component={CalenderScreen}
         /> */}
         {/* <Stack.Screen name="AboutUs" component={AboutUsScreen} /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Settings"
           options={{headerShown: false}}
           component={SettingSceen}
+        /> */}
+        <Stack.Screen
+          name="CreateTask"
+          options={{headerShown: false}}
+          component={CreateTaskScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
