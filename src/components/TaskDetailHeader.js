@@ -68,7 +68,7 @@ const renderDays = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '32%',
+    height: 200,
     width: '100%',
     borderBottomLeftRadius: 18,
     borderBottomRightRadius: 18,

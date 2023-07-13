@@ -16,13 +16,13 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#ffffff',
-    marginTop: 5,
+    color: '#111',
+    marginTop: 2,
   },
   subText: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#ffffff',
+    color: '#111',
   },
   dateContainer: {
     height: '75%',
