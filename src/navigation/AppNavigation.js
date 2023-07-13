@@ -9,13 +9,14 @@ import AllTasksScreen from '../screens/AllTasksScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import CalenderScreen from '../screens/CalenderScreen';
 import SettingScreen from '../screens/AboutUsScreen';
-import Header from '../components/Header';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AboutUsScreen from '../screens/AboutUsScreen';
 import SettingSceen from '../screens/SettingSceen';
 import CreateTaskScreen from '../screens/CreateTaskScreen';
 import HomeScreen from '../screens/HomeScreen';
+import Header from '../components/Header';
+import TaskDetailScreen from '../screens/TaskDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -83,10 +84,15 @@ export default function AppNavigation() {
           options={{headerShown: false}}
           component={CreateTaskScreen}
         /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Home"
           options={{headerShown: false}}
           component={HomeScreen}
+        /> */}
+        <Stack.Screen
+          name="TaskDetails"
+          options={{headerShown: false}}
+          component={TaskDetailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
