@@ -1,5 +1,6 @@
 import React from 'react';
 import {Appbar, Menu} from 'react-native-paper';
+import {Image, Text} from 'react-native';
 
 const AppBarComponent = ({
   isMenuOpen,
@@ -9,6 +10,7 @@ const AppBarComponent = ({
   title,
   style,
   showSearchIcon,
+  additionalIcons,
 }) => {
   return (
     <Appbar.Header
@@ -41,7 +43,30 @@ const AppBarComponent = ({
           marginLeft: 10,
         }}
       />
-      {showSearchIcon && ( // Render the search icon if showSearchIcon is true
+      {additionalIcons &&
+        additionalIcons.map((icon, index) => {
+          if (icon.type === 'image') {
+            return (
+              <Image
+                key={`image_${index}`}
+                source={require('../../assets/images/clock-icon.png')}
+                style={{height: 20, width: 40, resizeMode: 'contain'}}
+              />
+            );
+          } else {
+            return (
+              <Appbar.Action
+                key={index}
+                icon={icon.name}
+                onPress={icon.onPress}
+                color={icon.color || '#161616'}
+                size={icon.size || 30}
+                style={icon.style || {padding: 8}}
+              />
+            );
+          }
+        })}
+      {showSearchIcon && (
         <Appbar.Action
           icon="magnify"
           onPress={handleSearch}

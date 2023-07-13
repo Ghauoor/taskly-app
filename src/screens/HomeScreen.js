@@ -41,7 +41,7 @@ const HomeScreen = () => {
       Date: '03, Mar, 2022',
       task: 'Wake-Up',
       time: '06.00 AM',
-      colors: ['#1a67eb', '#d6dbe4'],
+      colors: ['#EC55E1', '#5E89D4'],
       start: {x: 0, y: 1},
       end: {x: 1, y: 0},
     },
@@ -49,7 +49,6 @@ const HomeScreen = () => {
 
   const renderItem = ({item}) => (
     <CompleteTaskListItem
-      key={item.key}
       Date={item.Date}
       task={item.task}
       time={item.time}
@@ -74,11 +73,11 @@ const HomeScreen = () => {
       />
       {/* Background Image and Text */}
       <View>
-        <ImageBackground
-          source={require('../../assets/images/home-screen-bubble.png')}
-          style={styles.imageBackground}>
-          <Text style={styles.nameText}>What's up, Olivia!</Text>
-        </ImageBackground>
+        {/* <ImageBackground
+          source={require('../../assets/images/bubble.png')}
+          style={styles.imageBackground}> */}
+        <Text style={styles.nameText}>What's up, Olivia!</Text>
+        {/* </ImageBackground> */}
       </View>
       <Text style={styles.categoriesText}>Categories</Text>
       <View style={styles.taskBoxContainer}>
@@ -103,7 +102,7 @@ const HomeScreen = () => {
         data={taskListData}
         renderItem={renderItem}
         keyExtractor={item => item.key}
-        style={{marginLeft: 16}}
+        contentContainerStyle={{marginLeft: 16}}
       />
       {/* Floating Action Button */}
       <LinearGradient

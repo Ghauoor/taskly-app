@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AboutUsScreen from '../screens/AboutUsScreen';
 import SettingSceen from '../screens/SettingSceen';
 import CreateTaskScreen from '../screens/CreateTaskScreen';
+import HomeScreen from '../screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -77,10 +78,15 @@ export default function AppNavigation() {
           options={{headerShown: false}}
           component={SettingSceen}
         /> */}
-        <Stack.Screen
+        {/* <Stack.Screen
           name="CreateTask"
           options={{headerShown: false}}
           component={CreateTaskScreen}
+        /> */}
+        <Stack.Screen
+          name="Home"
+          options={{headerShown: false}}
+          component={HomeScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
