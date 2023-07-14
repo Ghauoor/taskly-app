@@ -35,6 +35,11 @@ function MainStack() {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="CreateTask"
+        options={{headerShown: false}}
+        component={CreateTaskScreen}
+      />
+      <Stack.Screen
         name="TaskDetailsScreen"
         component={TaskDetailScreen}
         options={{headerShown: false}}
@@ -158,11 +163,6 @@ export default function AppNavigation() {
           }}
           component={SettingSceen}
         />
-        {/* <Drawer.Screen
-          name="CreateTask"
-          options={{headerShown: false}}
-          component={CreateTaskScreen}
-        /> */}
       </Drawer.Navigator>
     </NavigationContainer>
   );

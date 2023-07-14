@@ -122,7 +122,7 @@ const HomeScreen = ({navigation}) => {
             <Icon name="add" size={size} color="#FFFFFF" />
           )}
           style={styles.fab}
-          onPress={() => console.log('FAB Pressed')}
+          onPress={() => navigation.navigate('CreateTask')}
         />
       </LinearGradient>
     </View>
