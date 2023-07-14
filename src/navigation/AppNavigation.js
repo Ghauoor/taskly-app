@@ -23,7 +23,6 @@ import CustomHeader from '../components/CustomHeader';
 import CustomDrawer from '../components/CustomDrawer';
 import Feather from 'react-native-vector-icons/Feather';
 
-
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
@@ -31,12 +30,12 @@ function MainStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="HomeScreen"
         component={HomeScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="TaskDetails"
+        name="TaskDetailsScreen"
         component={TaskDetailScreen}
         options={{headerShown: false}}
       />
