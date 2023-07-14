@@ -1,13 +1,15 @@
 import React from 'react';
 import {View, StyleSheet, Text, ImageBackground, FlatList} from 'react-native';
-import AppBarComponent from '../components/AppBarComponent';
-import TaskBoxComponent from '../components/TaskBoxComponent';
-import CompleteTaskListItem from '../components/CompleteTaskListItem';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {FAB} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const HomeScreen = () => {
+import AppBarComponent from '../components/AppBarComponent';
+import TaskBoxComponent from '../components/TaskBoxComponent';
+import CompleteTaskListItem from '../components/CompleteTaskListItem';
+
+const HomeScreen = ({navigation}) => {
   const taskListData = [
     {
       key: 'task1',
@@ -58,10 +60,16 @@ const HomeScreen = () => {
     />
   );
 
+  const handleToggleMenu = () => {
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  };
+
   return (
     <View style={styles.container}>
       <AppBarComponent
+        handleToggleMenu={handleToggleMenu}
         showSearchIcon={true}
+        title="Home"
         additionalIcons={[
           {name: 'calendar', color: '#9200FA'},
           {
@@ -72,12 +80,11 @@ const HomeScreen = () => {
         style={styles.appBar}
       />
       {/* Background Image and Text */}
-      <View>
-        {/* <ImageBackground
-          source={require('../../assets/images/bubble.png')}
-          style={styles.imageBackground}> */}
+      <View style={{}}>
         <Text style={styles.nameText}>What's up, Olivia!</Text>
-        {/* </ImageBackground> */}
+        {/* <ImageBackground
+          source={require('../../assets/images/home-screen-bubble.png')}
+          style={styles.imageBackground}></ImageBackground> */}
       </View>
       <Text style={styles.categoriesText}>Categories</Text>
       <View style={styles.taskBoxContainer}>
@@ -147,9 +154,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   imageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'center',
+    //flex: 1,
+    height: 100,
+    width: 100,
+    resizeMode: 'contain',
+    flexDirection: 'flex-start',
   },
   fabGradient: {
     position: 'absolute',

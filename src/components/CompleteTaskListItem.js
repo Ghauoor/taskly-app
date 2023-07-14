@@ -28,18 +28,20 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
         </View>
         {/* Text Container */}
         <View style={styles.textContainer}>
-          <BouncyCheckbox
-            size={20}
-            fillColor="transparent"
-            unfillColor="#FFFFFF"
-            iconStyle={{borderRadius: 3}}
-            innerIconStyle={{
-              borderWidth: 2,
-              borderRadius: 4,
-              borderColor: 'transparent',
-            }}
-            style={{borderRadius: 4, marginTop: 2}}
-          />
+          <View style={styles.checkboxContainer}>
+            <BouncyCheckbox
+              size={20}
+              fillColor="transparent"
+              unfillColor="#FFFFFF"
+              iconStyle={{borderRadius: 1}}
+              innerIconStyle={{
+                borderWidth: 2,
+                borderRadius: 4,
+                borderColor: 'transparent',
+              }}
+              style={{borderRadius: 4, marginTop: 2}}
+            />
+          </View>
           <View style={styles.textContent}>
             <Text style={styles.taskText}>{task}</Text>
             <Text style={styles.timeText}>{time}</Text>
@@ -62,7 +64,7 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '95%',
+    width: 380,
     height: 80,
     marginTop: 10,
     borderRadius: 8,
@@ -86,14 +88,17 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 20,
+    marginTop: 10,
+  },
+  checkboxContainer: {
+    alignSelf: 'center',
   },
   textContent: {
-    height: '100%',
-    marginLeft: 8,
-    marginTop: 25,
+    flexDirection: 'column',
+    flex: 1,
+    marginRight: 10,
   },
   taskText: {
     fontSize: 19,
@@ -105,17 +110,19 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   iconContainer: {
-    marginLeft: 190,
     marginTop: 10,
   },
   date: {
     color: '#000000',
     marginTop: 10,
+    fontWeight: 'bold',
+    fontSize: 24,
   },
   additionalContent: {
     paddingHorizontal: 20,
     paddingTop: 10,
     color: '#fff',
+    marginLeft: 30,
   },
 });
 

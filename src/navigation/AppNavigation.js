@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Image} from 'react-native';
+import {createDrawerNavigator} from '@react-navigation/drawer';
+import {createStackNavigator} from '@react-navigation/stack';
 import {View} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import WelcomeScreen from '../screens/WelcomeScreen';
@@ -17,84 +19,152 @@ import CreateTaskScreen from '../screens/CreateTaskScreen';
 import HomeScreen from '../screens/HomeScreen';
 import Header from '../components/Header';
 import TaskDetailScreen from '../screens/TaskDetailScreen';
+import CustomHeader from '../components/CustomHeader';
+import CustomDrawer from '../components/CustomDrawer';
+import Feather from 'react-native-vector-icons/Feather';
 
-const Stack = createNativeStackNavigator();
+
+const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator();
+
+function MainStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TaskDetails"
+        component={TaskDetailScreen}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function AppNavigation() {
-  const CustomHeader = ({navigation}) => (
-    <View
-      style={{
-        overflow: 'hidden',
-        height: 80,
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
-      }}>
-      <LinearGradient
-        colors={['#A100FE', '#F300F0']}
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        style={{flex: 1, alignContent: 'center', justifyContent: 'center'}}>
-        <Header name="About Us" onPress={() => {}} />
-      </LinearGradient>
-    </View>
-  );
-
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={({navigation, route}) => ({
-          header:
-            route.name === 'AboutUs'
-              ? () => <CustomHeader navigation={navigation} />
-              : null,
-        })}>
-        {/* <Stack.Screen
+      <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
+        <Drawer.Screen
+          name="Home"
+          options={{
+            drawerActiveBackgroundColor: 'transparent',
+            headerShown: false,
+            drawerLabelStyle: {
+              marginLeft: -10,
+              color: '#fff',
+              fontSize: 16,
+              fontFamily: 'Sofia Pro',
+            },
+            drawerIcon: () => <Feather name="home" size={25} color={'#fff'} />,
+          }}
+          component={MainStack}
+        />
+        {/* <Drawer.Screen
           name="Welcome"
           options={{headerShown: false}}
           component={WelcomeScreen}
         /> */}
-        {/* <Stack.Screen
+        {/* <Drawer.Screen
           name="Logo"
           options={{headerShown: false}}
           component={LogoScreen}
         /> */}
-        {/* <Stack.Screen
-          name="AllTask"
-          options={{headerShown: false}}
-          component={AllTasksScreen}
-        /> */}
-        {/* <Stack.Screen
+        <Drawer.Screen
           name="Categories"
-          options={{headerShown: false}}
+          options={{
+            headerShown: false,
+            drawerActiveBackgroundColor: 'transparent',
+            drawerLabelStyle: {
+              marginLeft: -10,
+              color: '#fff',
+              fontSize: 16,
+              fontFamily: 'Sofia Pro',
+            },
+            drawerIcon: () => (
+              <Image
+                source={require('../../assets/images/categories.png')}
+                style={{height: 22, width: 22}}
+              />
+            ),
+          }}
           component={CategoriesScreen}
-        /> */}
-        {/* <Stack.Screen
+        />
+        <Drawer.Screen
           name="Calender"
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+            drawerActiveBackgroundColor: 'transparent',
+            drawerLabelStyle: {
+              marginLeft: -10,
+              color: '#fff',
+              fontSize: 16,
+              fontFamily: 'Sofia Pro',
+            },
+            drawerIcon: () => (
+              <Image
+                source={require('../../assets/images/calender.png')}
+                style={{height: 22, width: 22, resizeMode: 'contain'}}
+              />
+            ),
+          }}
           component={CalenderScreen}
+        />
+        <Drawer.Screen
+          name="All Task"
+          options={{
+            headerShown: false,
+            drawerActiveBackgroundColor: 'transparent',
+            drawerLabelStyle: {
+              marginLeft: -10,
+              color: '#fff',
+              fontSize: 16,
+              fontFamily: 'Sofia Pro',
+            },
+            drawerIcon: () => (
+              <Image
+                source={require('../../assets/images/all-task.png')}
+                style={{height: 22, width: 22, resizeMode: 'contain'}}
+              />
+            ),
+          }}
+          component={AllTasksScreen}
+        />
+        {/* <Drawer.Screen
+          name="AboutUs"
+          component={AboutUsScreen}
+          options={{
+            header: () => {
+              return <CustomHeader />;
+            },
+          }}
         /> */}
-        {/* <Stack.Screen name="AboutUs" component={AboutUsScreen} /> */}
-        {/* <Stack.Screen
+        <Drawer.Screen
           name="Settings"
-          options={{headerShown: false}}
+          options={{
+            drawerActiveBackgroundColor: 'transparent',
+            headerShown: false,
+            drawerLabelStyle: {
+              marginLeft: -10,
+              color: '#fff',
+              fontSize: 16,
+              fontFamily: 'Sofia Pro',
+            },
+            drawerIcon: () => (
+              <Feather name="settings" size={25} color={'#fff'} />
+            ),
+          }}
           component={SettingSceen}
-        /> */}
-        {/* <Stack.Screen
+        />
+        {/* <Drawer.Screen
           name="CreateTask"
           options={{headerShown: false}}
           component={CreateTaskScreen}
         /> */}
-        {/* <Stack.Screen
-          name="Home"
-          options={{headerShown: false}}
-          component={HomeScreen}
-        /> */}
-        <Stack.Screen
-          name="TaskDetails"
-          options={{headerShown: false}}
-          component={TaskDetailScreen}
-        />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

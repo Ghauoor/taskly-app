@@ -1,9 +1,7 @@
 import React from 'react';
-import WelcomeScreen from './screens/WelcomeScreen';
 import AppNavigation from './navigation/AppNavigation';
-
+import 'react-native-gesture-handler';
 const App = () => {
-  
   return <AppNavigation />;
 };
 
