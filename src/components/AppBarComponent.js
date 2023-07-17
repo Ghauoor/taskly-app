@@ -2,7 +2,6 @@ import React from 'react';
 import {Appbar, Menu} from 'react-native-paper';
 import {Image} from 'react-native';
 
-
 const AppBarComponent = ({
   isMenuOpen,
   handleToggleMenu,

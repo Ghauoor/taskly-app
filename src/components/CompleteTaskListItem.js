@@ -65,8 +65,8 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
 const styles = StyleSheet.create({
   container: {
     width: 380,
-    height: 80,
-    marginTop: 10,
+    height: 90,
+    //marginTop: 10,
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    marginTop: 10,
+    marginTop: 18,
   },
   checkboxContainer: {
     alignSelf: 'center',
@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
   taskText: {
     fontSize: 19,
     color: '#fff',
+    marginLeft: 10,
   },
   timeText: {
     color: '#fff',
-    marginLeft: 2,
-    marginBottom: 5,
+    marginLeft: 11,
   },
   iconContainer: {
     marginTop: 10,
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     color: '#fff',
-    marginLeft: 30,
+    marginLeft: 45,
   },
 });
 

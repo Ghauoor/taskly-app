@@ -8,8 +8,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppBarComponent from '../components/AppBarComponent';
 import TaskBoxComponent from '../components/TaskBoxComponent';
 import CompleteTaskListItem from '../components/CompleteTaskListItem';
+import moment from 'moment';
 
 const HomeScreen = ({navigation}) => {
+  const currentDate = `Today ${moment().format('DD, MMM')}`;
+
   const taskListData = [
     {
       key: 'task1',
@@ -22,7 +25,7 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 'task2',
-      Date: '09, Mar, 2022',
+      Date: 'Tommorow 03, Mar',
       task: 'Wake-Up',
       time: '06.00 AM',
       colors: ['#E100FF', '#FCCDB7'],
@@ -31,7 +34,7 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 'task3',
-      Date: '03, Mar, 2022',
+      Date: '05, Mar',
       task: 'Wake-Up',
       time: '06.00 AM',
       colors: ['#BBC4D4', '#5D86CC'],
@@ -40,7 +43,7 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 'task4',
-      Date: '03, Mar, 2022',
+      Date: '06, Mar',
       task: 'Wake-Up',
       time: '06.00 AM',
       colors: ['#EC55E1', '#5E89D4'],
@@ -69,23 +72,27 @@ const HomeScreen = ({navigation}) => {
       <AppBarComponent
         handleToggleMenu={handleToggleMenu}
         showSearchIcon={true}
-        title="Home"
+        title={currentDate}
         additionalIcons={[
           {name: 'calendar', color: '#9200FA'},
           {
             type: 'image',
-            //source: '../../assets/images/logo.png',
           },
         ]}
         style={styles.appBar}
       />
+
       {/* Background Image and Text */}
-      <View style={{}}>
-        <Text style={styles.nameText}>What's up, Olivia!</Text>
-        {/* <ImageBackground
-          source={require('../../assets/images/home-screen-bubble.png')}
-          style={styles.imageBackground}></ImageBackground> */}
+      <View style={styles.backgroundContainer}>
+        <View style={styles.nameTextContainer}>
+          <Text style={styles.nameText}>What's up, Olivia!</Text>
+        </View>
+        <ImageBackground
+          source={require('../../assets/images/bubble.png')}
+          style={styles.imageBackground}
+        />
       </View>
+
       <Text style={styles.categoriesText}>Categories</Text>
       <View style={styles.taskBoxContainer}>
         <TaskBoxComponent
@@ -109,7 +116,7 @@ const HomeScreen = ({navigation}) => {
         data={taskListData}
         renderItem={renderItem}
         keyExtractor={item => item.key}
-        contentContainerStyle={{marginLeft: 16}}
+        contentContainerStyle={{marginLeft: 18}}
       />
       {/* Floating Action Button */}
       <LinearGradient
@@ -118,9 +125,7 @@ const HomeScreen = ({navigation}) => {
         end={{x: 1, y: 0}}
         style={styles.fabGradient}>
         <FAB
-          icon={({color, size}) => (
-            <Icon name="add" size={size} color="#FFFFFF" />
-          )}
+          icon={({size}) => <Icon name="add" size={size} color="#FFFFFF" />}
           style={styles.fab}
           onPress={() => navigation.navigate('CreateTask')}
         />
@@ -138,8 +143,9 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 35,
-    marginLeft: 25,
     color: '#111111',
+    fontFamily: 'Sofia Pro',
+    fontWeight: '800',
   },
   categoriesText: {
     fontSize: 16,
@@ -150,15 +156,25 @@ const styles = StyleSheet.create({
   },
   taskBoxContainer: {
     flexDirection: 'row',
-    height: '18%',
-    justifyContent: 'space-evenly',
+    height: '15%',
+    gap: 10,
+    marginLeft: 20,
+  },
+  backgroundContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // paddingHorizontal: 25,
+    // paddingVertical: 10,
+    marginLeft: 20,
+    marginRight: 20,
+  },
+  nameTextContainer: {
+    flex: 1,
   },
   imageBackground: {
-    //flex: 1,
     height: 100,
     width: 100,
     resizeMode: 'contain',
-    flexDirection: 'flex-start',
   },
   fabGradient: {
     position: 'absolute',
@@ -176,6 +192,9 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
+  },
+  taskListItem: {
+    marginTop: 50,
   },
 });
 

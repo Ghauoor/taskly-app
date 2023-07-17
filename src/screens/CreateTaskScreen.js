@@ -5,9 +5,11 @@ import GradientButton from '../components/GradientButton';
 import CreateTaskComponent from '../components/CreateTaskComponent';
 import DatePickerComponent from '../components/DatePickerComponent';
 import TimeInputComponent from '../components/TimeInputComponent';
-import {TouchableOpacity} from 'react-native';
 
-const CreateTaskScreen = () => {
+const CreateTaskScreen = ({navigation}) => {
+  const handleSelectCategory = () => {
+    navigation.navigate('CategoriesScreen');
+  };
   return (
     <View style={styles.container}>
       <Header name="Create Task" textStyle={styles.title} iconColor="#111111" />
@@ -18,6 +20,7 @@ const CreateTaskScreen = () => {
           start={{x: 0, y: 1}}
           end={{x: 1, y: 2}}
           text="Select Category"
+          onPress={handleSelectCategory}
         />
       </View>
       {/* input text */}

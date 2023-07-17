@@ -25,10 +25,9 @@ const styles = StyleSheet.create({
     color: '#111',
   },
   dateContainer: {
-    height: '75%',
-    width: '25%',
+    height: 70,
+    width: 120,
     marginTop: 12,
-    padding: 10,
     borderRadius: 8,
   },
   textContainer: {

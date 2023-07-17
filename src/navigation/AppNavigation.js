@@ -44,6 +44,13 @@ function MainStack() {
         component={TaskDetailScreen}
         options={{headerShown: false}}
       />
+      <Stack.Screen
+        name="CategoriesScreen"
+        options={{
+          headerShown: false,
+        }}
+        component={CategoriesScreen}
+      />
     </Stack.Navigator>
   );
 }

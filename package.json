@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^18.2.0",
     "@react-native-material/core": "^1.3.7",
     "@react-navigation/drawer": "^6.6.3",
     "@react-navigation/native": "^6.1.7",
