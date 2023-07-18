@@ -1,10 +1,38 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 import GradientButton from '../components/GradientButton';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 let {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
+  GoogleSignin.configure({
+    webClientId:
+      '1971063694-rfp8ju9qdlfvhv56gbeqje1cbdi5pp1q.apps.googleusercontent.com',
+  });
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      // const userInfo = await GoogleSignin.signIn();
+      // setState({userInfo});
+      const {idToken} = await GoogleSignin.signIn();
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+      await signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Images */}
@@ -33,6 +61,7 @@ const WelcomeScreen = () => {
             end={{x: 1, y: 0}}
             text="Continue With Google"
             logoSource={require('../../assets/images/google-logo.png')}
+            onPress={() => signIn()}
           />
         </View>
       </View>

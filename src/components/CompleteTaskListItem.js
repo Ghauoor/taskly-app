@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   container: {
     width: 380,
     height: 90,
-    //marginTop: 10,
+    marginTop: 10,
     borderRadius: 8,
     overflow: 'hidden',
   },

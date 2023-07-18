@@ -55,96 +55,113 @@ function MainStack() {
   );
 }
 
-export default function AppNavigation() {
+function AuthStack() {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
-        <Drawer.Screen
-          name="Home"
-          options={{
-            drawerActiveBackgroundColor: 'transparent',
-            headerShown: false,
-            drawerLabelStyle: {
-              marginLeft: -10,
-              color: '#fff',
-              fontSize: 16,
-              fontFamily: 'Sofia Pro',
-            },
-            drawerIcon: () => <Feather name="home" size={25} color={'#fff'} />,
-          }}
-          component={MainStack}
-        />
-        {/* <Drawer.Screen
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Logo"
+        options={{headerShown: false}}
+        component={LogoScreen}
+      />
+
+      <Stack.Screen
+        name="WelcomeScreen"
+        options={{headerShown: false}}
+        component={WelcomeScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function AppNavigation() {
+  return (
+    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
+      <Drawer.Screen
+        name="Home"
+        options={{
+          drawerActiveBackgroundColor: 'transparent',
+          headerShown: false,
+          drawerLabelStyle: {
+            marginLeft: -10,
+            color: '#fff',
+            fontSize: 16,
+            fontFamily: 'Sofia Pro',
+          },
+          drawerIcon: () => <Feather name="home" size={25} color={'#fff'} />,
+        }}
+        component={MainStack}
+      />
+      {/* <Drawer.Screen
           name="Welcome"
           options={{headerShown: false}}
           component={WelcomeScreen}
         /> */}
-        {/* <Drawer.Screen
+      {/* <Drawer.Screen
           name="Logo"
           options={{headerShown: false}}
           component={LogoScreen}
         /> */}
-        <Drawer.Screen
-          name="Categories"
-          options={{
-            headerShown: false,
-            drawerActiveBackgroundColor: 'transparent',
-            drawerLabelStyle: {
-              marginLeft: -10,
-              color: '#fff',
-              fontSize: 16,
-              fontFamily: 'Sofia Pro',
-            },
-            drawerIcon: () => (
-              <Image
-                source={require('../../assets/images/categories.png')}
-                style={{height: 22, width: 22}}
-              />
-            ),
-          }}
-          component={CategoriesScreen}
-        />
-        <Drawer.Screen
-          name="Calender"
-          options={{
-            headerShown: false,
-            drawerActiveBackgroundColor: 'transparent',
-            drawerLabelStyle: {
-              marginLeft: -10,
-              color: '#fff',
-              fontSize: 16,
-              fontFamily: 'Sofia Pro',
-            },
-            drawerIcon: () => (
-              <Image
-                source={require('../../assets/images/calender.png')}
-                style={{height: 22, width: 22, resizeMode: 'contain'}}
-              />
-            ),
-          }}
-          component={CalenderScreen}
-        />
-        <Drawer.Screen
-          name="All Task"
-          options={{
-            headerShown: false,
-            drawerActiveBackgroundColor: 'transparent',
-            drawerLabelStyle: {
-              marginLeft: -10,
-              color: '#fff',
-              fontSize: 16,
-              fontFamily: 'Sofia Pro',
-            },
-            drawerIcon: () => (
-              <Image
-                source={require('../../assets/images/all-task.png')}
-                style={{height: 22, width: 22, resizeMode: 'contain'}}
-              />
-            ),
-          }}
-          component={AllTasksScreen}
-        />
-        {/* <Drawer.Screen
+      <Drawer.Screen
+        name="Categories"
+        options={{
+          headerShown: false,
+          drawerActiveBackgroundColor: 'transparent',
+          drawerLabelStyle: {
+            marginLeft: -10,
+            color: '#fff',
+            fontSize: 16,
+            fontFamily: 'Sofia Pro',
+          },
+          drawerIcon: () => (
+            <Image
+              source={require('../../assets/images/categories.png')}
+              style={{height: 22, width: 22}}
+            />
+          ),
+        }}
+        component={CategoriesScreen}
+      />
+      <Drawer.Screen
+        name="Calender"
+        options={{
+          headerShown: false,
+          drawerActiveBackgroundColor: 'transparent',
+          drawerLabelStyle: {
+            marginLeft: -10,
+            color: '#fff',
+            fontSize: 16,
+            fontFamily: 'Sofia Pro',
+          },
+          drawerIcon: () => (
+            <Image
+              source={require('../../assets/images/calender.png')}
+              style={{height: 22, width: 22, resizeMode: 'contain'}}
+            />
+          ),
+        }}
+        component={CalenderScreen}
+      />
+      <Drawer.Screen
+        name="All Task"
+        options={{
+          headerShown: false,
+          drawerActiveBackgroundColor: 'transparent',
+          drawerLabelStyle: {
+            marginLeft: -10,
+            color: '#fff',
+            fontSize: 16,
+            fontFamily: 'Sofia Pro',
+          },
+          drawerIcon: () => (
+            <Image
+              source={require('../../assets/images/all-task.png')}
+              style={{height: 22, width: 22, resizeMode: 'contain'}}
+            />
+          ),
+        }}
+        component={AllTasksScreen}
+      />
+      {/* <Drawer.Screen
           name="AboutUs"
           component={AboutUsScreen}
           options={{
@@ -153,24 +170,41 @@ export default function AppNavigation() {
             },
           }}
         /> */}
-        <Drawer.Screen
-          name="Settings"
-          options={{
-            drawerActiveBackgroundColor: 'transparent',
-            headerShown: false,
-            drawerLabelStyle: {
-              marginLeft: -10,
-              color: '#fff',
-              fontSize: 16,
-              fontFamily: 'Sofia Pro',
-            },
-            drawerIcon: () => (
-              <Feather name="settings" size={25} color={'#fff'} />
-            ),
-          }}
-          component={SettingSceen}
+      <Drawer.Screen
+        name="Settings"
+        options={{
+          drawerActiveBackgroundColor: 'transparent',
+          headerShown: false,
+          drawerLabelStyle: {
+            marginLeft: -10,
+            color: '#fff',
+            fontSize: 16,
+            fontFamily: 'Sofia Pro',
+          },
+          drawerIcon: () => (
+            <Feather name="settings" size={25} color={'#fff'} />
+          ),
+        }}
+        component={SettingSceen}
+      />
+    </Drawer.Navigator>
+  );
+}
+export function FullStack() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {/* <Stack.Screen
+          name="auth"
+          options={{headerShown: false}}
+          component={AuthStack}
+        /> */}
+        <Stack.Screen
+          name="app"
+          options={{headerShown: false}}
+          component={AppNavigation}
         />
-      </Drawer.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

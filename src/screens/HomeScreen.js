@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Text, ImageBackground, FlatList} from 'react-native';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import {View, StyleSheet, Text, ImageBackground, FlatList, Image} from 'react-native';
+import {DrawerActions,} from '@react-navigation/native';
 import {FAB} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -85,12 +85,20 @@ const HomeScreen = ({navigation}) => {
       {/* Background Image and Text */}
       <View style={styles.backgroundContainer}>
         <View style={styles.nameTextContainer}>
-          <Text style={styles.nameText}>What's up, Olivia!</Text>
+          <Text style={styles.nameText}>What's up, Olivia</Text>
         </View>
-        <ImageBackground
-          source={require('../../assets/images/bubble.png')}
-          style={styles.imageBackground}
-        />
+        <View
+          style={{
+            flexGrow: 1,
+            flexDirection: 'row',
+            //backgroundColor: 'red',
+          }}>
+          <Image
+            source={require('../../assets/images/bubble.png')}
+            style={styles.imageBackground}>
+            
+          </Image>
+        </View>
       </View>
 
       <Text style={styles.categoriesText}>Categories</Text>
@@ -163,18 +171,17 @@ const styles = StyleSheet.create({
   backgroundContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingHorizontal: 25,
-    // paddingVertical: 10,
     marginLeft: 20,
-    marginRight: 20,
   },
   nameTextContainer: {
-    flex: 1,
+    width: 'auto',
   },
   imageBackground: {
     height: 100,
-    width: 100,
+    flexDirection: 'row',
     resizeMode: 'contain',
+    alignItems: 'center',
+    // justifyContent: 'space-between',
   },
   fabGradient: {
     position: 'absolute',
@@ -185,7 +192,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   fab: {
-    flex: 1,
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
