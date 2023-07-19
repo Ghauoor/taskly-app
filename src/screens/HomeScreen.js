@@ -1,6 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Text, ImageBackground, FlatList, Image} from 'react-native';
-import {DrawerActions,} from '@react-navigation/native';
+import {View, StyleSheet, Text, FlatList, Image} from 'react-native';
+import {DrawerActions} from '@react-navigation/native';
 import {FAB} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -89,15 +89,14 @@ const HomeScreen = ({navigation}) => {
         </View>
         <View
           style={{
-            flexGrow: 1,
             flexDirection: 'row',
-            //backgroundColor: 'red',
+            position: 'absolute',
+            right: 50,
+            zIndex: -9999,
           }}>
           <Image
             source={require('../../assets/images/bubble.png')}
-            style={styles.imageBackground}>
-            
-          </Image>
+            style={styles.imageBackground}></Image>
         </View>
       </View>
 
@@ -124,7 +123,7 @@ const HomeScreen = ({navigation}) => {
         data={taskListData}
         renderItem={renderItem}
         keyExtractor={item => item.key}
-        contentContainerStyle={{marginLeft: 18}}
+        contentContainerStyle={{marginLeft: 18, marginTop: 10}}
       />
       {/* Floating Action Button */}
       <LinearGradient
@@ -158,7 +157,8 @@ const styles = StyleSheet.create({
   categoriesText: {
     fontSize: 16,
     marginLeft: 25,
-    marginTop: 20,
+    marginTop: 40,
+    marginBottom: 20,
     fontWeight: 'bold',
     color: '#111',
   },
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     resizeMode: 'contain',
     alignItems: 'center',
-    // justifyContent: 'space-between',
+    marginTop: 20,
   },
   fabGradient: {
     position: 'absolute',

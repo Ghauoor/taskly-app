@@ -3,11 +3,16 @@ import {View, StyleSheet, Text} from 'react-native';
 import AppBarComponent from '../components/AppBarComponent';
 import ProfileView from '../components/ProfileView';
 import SettingsCard from '../components/SettingsCard';
+import {DrawerActions} from '@react-navigation/native';
 
-const SettingScreen = () => {
+const SettingScreen = ({navigation}) => {
+  const handleToggleMenu = () => {
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  };
   return (
     <View style={styles.container}>
       <AppBarComponent
+        handleToggleMenu={handleToggleMenu}
         title="Settings"
         style={styles.appBar}
         showSearchIcon={false}

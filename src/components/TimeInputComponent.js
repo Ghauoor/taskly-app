@@ -3,8 +3,6 @@ import {Text} from 'react-native';
 import {View, StyleSheet, TextInput} from 'react-native';
 
 const TimeInputComponent = props => {
-  const [text, onChangeText] = React.useState('');
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{props.title}</Text>
@@ -12,9 +10,9 @@ const TimeInputComponent = props => {
       <TextInput
         style={styles.input}
         placeholder={props.placeholder}
-        onChangeText={onChangeText}
-        value={text}
-        editable={props.editable}
+        onChangeText={props.onChangeText}
+        value={props.text}
+        keyboardType="number-pad"
       />
     </View>
   );

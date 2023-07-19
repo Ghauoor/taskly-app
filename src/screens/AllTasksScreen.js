@@ -5,8 +5,12 @@ import AppBarComponent from '../components/AppBarComponent';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {DrawerActions} from '@react-navigation/native';
 
-const AllTasksScreen = () => {
+const AllTasksScreen = ({navigation}) => {
+  const handleToggleMenu = () => {
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  };
   const tasks = [
     {id: '1', title: 'Daily Meeting with team', description: '7:30 PM'},
     {id: '2', title: 'Daily Meeting with team', description: '7:30 PM'},
@@ -73,6 +77,7 @@ const AllTasksScreen = () => {
         title="All Task Screen"
         style={styles.appBar}
         showSearchIcon={true}
+        handleToggleMenu={handleToggleMenu}
       />
       <View style={styles.listContainer}>
         <FlatList
@@ -92,7 +97,7 @@ const AllTasksScreen = () => {
           icon={({size, color}) => (
             <Icon name="add" size={size} color="#ffffff" />
           )}
-          onPress={() => console.log('FAB pressed')}
+          onPress={() => navigation.navigate('CreateTask')}
         />
       </LinearGradient>
     </View>

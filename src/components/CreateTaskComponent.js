@@ -3,7 +3,7 @@ import {Text} from 'react-native';
 import {View, StyleSheet, TextInput} from 'react-native';
 
 const CreateTaskComponent = props => {
-  const [text, onChangeText] = React.useState('');
+  // const [text, onChangeText] = React.useState('');
 
   return (
     <View style={styles.container}>
@@ -12,8 +12,8 @@ const CreateTaskComponent = props => {
       <TextInput
         style={styles.input}
         placeholder={props.placeholder}
-        onChangeText={onChangeText}
-        value={text}
+        onChangeText={props.onChangeText}
+        value={props.text}
         editable={props.editable}
       />
     </View>

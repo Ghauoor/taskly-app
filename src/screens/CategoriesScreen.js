@@ -1,10 +1,14 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import AppBarComponent from '../components/AppBarComponent';
+import {DrawerActions} from '@react-navigation/native';
 
-const CategoriesScreen = () => {
+const CategoriesScreen = ({navigation}) => {
+  const handleToggleMenu = () => {
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  };
   const categories = [
     {id: '1', title: 'All'},
     {id: '2', title: 'Work'},
@@ -18,15 +22,24 @@ const CategoriesScreen = () => {
   const renderItem = ({item, index}) => {
     const saveIconColor = index % 2 === 0 ? '#AB47BC' : '#D226F2';
 
+    const handleCategorySelection = categoryTitle => {
+      console.log(categoryTitle);
+      navigation.navigate('CreateTask', {category: categoryTitle});
+    };
+
     return (
-      <View style={styles.item}>
-        <View style={styles.categoryItem}>
-          <Text style={styles.title}>{item.title}</Text>
-          <View style={[styles.saveIcon, {backgroundColor: saveIconColor}]}>
-            <Icon name="save" size={24} color="#ffffff" />
+      <TouchableOpacity
+        onPress={() => handleCategorySelection(item.title)}
+        activeOpacity={0.7}>
+        <View style={styles.item}>
+          <View style={styles.categoryItem}>
+            <Text style={styles.title}>{item.title}</Text>
+            <View style={[styles.saveIcon, {backgroundColor: saveIconColor}]}>
+              <Icon name="save" size={24} color="#ffffff" />
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -36,6 +49,7 @@ const CategoriesScreen = () => {
         title="Categories"
         style={styles.appBar}
         showSearchIcon={true}
+        handleToggleMenu={handleToggleMenu}
       />
       <View style={styles.listContainer}>
         <FlatList

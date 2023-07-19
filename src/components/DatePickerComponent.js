@@ -1,6 +1,11 @@
-import React from 'react';
-import {Text} from 'react-native';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Text,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const DatePickerComponent = props => {
@@ -9,7 +14,13 @@ const DatePickerComponent = props => {
       <Text style={styles.text}>{props.title}</Text>
       {/* Input field */}
       <View style={styles.dateContainer}>
-        <Text>{props.des}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder={props.placeholder}
+          onChangeText={props.onChangeText} // pass null to disable
+          value={props.des || ''}
+          editable={false} // Disable editing
+        />
         <TouchableOpacity onPress={null}>
           <Icon name="down" size={22} color="#222A47" />
         </TouchableOpacity>
@@ -35,6 +46,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  input: {
+    flex: 1,
+    fontSize: 16,
+    color: '#222A47',
+    marginLeft: 5,
   },
 });
 

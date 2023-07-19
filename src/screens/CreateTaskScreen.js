@@ -1,18 +1,67 @@
-import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Text, TextInput} from 'react-native';
 import Header from '../components/Header';
 import GradientButton from '../components/GradientButton';
 import CreateTaskComponent from '../components/CreateTaskComponent';
 import DatePickerComponent from '../components/DatePickerComponent';
 import TimeInputComponent from '../components/TimeInputComponent';
 
-const CreateTaskScreen = ({navigation}) => {
+const CreateTaskScreen = ({navigation, route}) => {
+  const [titleName, setTitleName] = useState('');
+  const [description, setDescription] = useState('');
+  const [innerLocation, setInnerLocation] = useState('');
+  const [initialTime, setInitialTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+
+  //get the category
+  let category;
+  if (route.params) {
+    category = route.params.category;
+    console.log('SCREEn => ', category);
+  } else {
+    category = '';
+  }
   const handleSelectCategory = () => {
     navigation.navigate('CategoriesScreen');
   };
+  // Backbutton
+  const handleBackIconPress = () => {
+    navigation.goBack();
+  };
+
+  //Tittle text field
+  const handleTitleText = text => {
+    console.log(text);
+    setTitleName(text);
+  };
+
+  // Description Text Field
+  const handleDescriptionText = text => {
+    console.log(text);
+    setDescription(text);
+  };
+
+  //initial time
+  const handleInitialTime = text => {
+    console.log(text);
+    setInitialTime(text);
+  };
+
+  //end time
+  const handleEndTime = text => {
+    console.log(text);
+    setEndTime(text);
+  };
+
   return (
     <View style={styles.container}>
-      <Header name="Create Task" textStyle={styles.title} iconColor="#111111" />
+      <Text>{category}</Text>
+      <Header
+        name="Create Task"
+        textStyle={styles.title}
+        iconColor="#111111"
+        onPress={handleBackIconPress}
+      />
       {/* Select Category Button */}
       <View style={styles.buttonContainer}>
         <GradientButton
@@ -26,20 +75,48 @@ const CreateTaskScreen = ({navigation}) => {
       {/* input text */}
       <View style={styles.inputContainer}>
         <View style={styles.textFields}>
-          <CreateTaskComponent title="Title" placeholder="Title" />
+          {/* Title */}
+          <CreateTaskComponent
+            title="Title"
+            placeholder="Title"
+            text={titleName}
+            onChangeText={handleTitleText}
+          />
+          {/* description */}
           <View style={styles.descriptionMargin} />
-          <CreateTaskComponent title="Description" placeholder="Description" />
+          <CreateTaskComponent
+            title="Description"
+            placeholder="Description"
+            text={description}
+            onChangeText={handleDescriptionText}
+          />
+
+          {/* Location */}
           <Text style={styles.locationText}>Location</Text>
-          <Text style={styles.locationInnerText}>Location</Text>
+          <TextInput
+            value={innerLocation}
+            onChangeText={setInnerLocation}
+            placeholder=" Location"
+            placeholderTextColor="#B9BDCC"
+          />
           {/* Date */}
-          <DatePickerComponent title="Date" des="dd/mm/yy" />
+          <DatePickerComponent title="Date" placeholder="dd/mm/yy" />
           {/* Time input container  */}
           <View style={styles.timeInputContainer}>
-            <TimeInputComponent title="Time" placeholder="00:00 AM" />
+            <TimeInputComponent
+              title="Time"
+              placeholder="00:00 AM"
+              text={initialTime}
+              onChangeText={handleInitialTime}
+            />
             {/* Manage the inputs */}
             <View style={{flexDirection: 'row', marginLeft: 60}}>
               <Text style={styles.line}>----</Text>
-              <TimeInputComponent placeholder="00:00 AM" />
+              <TimeInputComponent
+                placeholder="00:00 AM"
+                text={endTime}
+                onChangeText={handleEndTime}
+              />
             </View>
           </View>
         </View>
@@ -108,6 +185,7 @@ const styles = StyleSheet.create({
   buttonContainerSave: {
     marginTop: 20,
     marginBottom: 5,
+    marginLeft: 10,
   },
 });
 

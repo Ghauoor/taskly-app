@@ -6,9 +6,13 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isChecked, setChecked] = useState(false);
 
   const toggleAccordion = () => {
     setIsExpanded(!isExpanded);
+  };
+  const handleCheckboxClick = () => {
+    setChecked(prevState => !prevState);
   };
 
   return (
@@ -30,10 +34,15 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
         <View style={styles.textContainer}>
           <View style={styles.checkboxContainer}>
             <BouncyCheckbox
+              isChecked={isChecked}
               size={20}
-              fillColor="transparent"
+              fillColor="#FFFFFF"
               unfillColor="#FFFFFF"
-              iconStyle={{borderRadius: 1}}
+              iconComponent={isChecked ? <Icon name="check" size={16} /> : null}
+              iconStyle={{
+                borderRadius: 1,
+              }}
+              onPress={chck => setChecked(chck)}
               innerIconStyle={{
                 borderWidth: 2,
                 borderRadius: 4,
