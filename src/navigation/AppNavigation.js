@@ -22,6 +22,9 @@ import TaskDetailScreen from '../screens/TaskDetailScreen';
 import CustomHeader from '../components/CustomHeader';
 import CustomDrawer from '../components/CustomDrawer';
 import Feather from 'react-native-vector-icons/Feather';
+import {useDispatch, useSelector} from 'react-redux';
+import {setUser} from '../redux/slices/user';
+import {onAuthStateChanged, auth} from '@react-native-firebase/auth';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -191,19 +194,25 @@ function AppNavigation() {
   );
 }
 export function FullStack() {
+  const user = useSelector(state => state.userState.user);
+  console.log("I'm user", user);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen
-          name="auth"
-          options={{headerShown: false}}
-          component={AuthStack}
-        /> */}
-        <Stack.Screen
-          name="app"
-          options={{headerShown: false}}
-          component={AppNavigation}
-        />
+        {user ? (
+          <Stack.Screen
+            name="app"
+            options={{headerShown: false}}
+            component={AppNavigation}
+          />
+        ) : (
+          <Stack.Screen
+            name="auth"
+            options={{headerShown: false}}
+            component={AuthStack}
+          />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

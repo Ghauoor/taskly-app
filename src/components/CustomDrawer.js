@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -14,8 +14,11 @@ import {
 } from '@react-navigation/drawer';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useSelector} from 'react-redux';
 
 const CustomDrawer = props => {
+  const {user} = useSelector(state => state.userState.user);
+  console.log("I'm groot", user);
   const drawerStatus = useDrawerStatus();
 
   const handleDrawerClose = () => {
@@ -46,13 +49,10 @@ const CustomDrawer = props => {
               source={require('../../assets/images/drawer-bg-image.png')}
               style={styles.backgroundImage}>
               <View style={styles.avatarContainer}>
-                <Image
-                  source={require('../../assets/images/image.png')}
-                  style={styles.profileImage}
-                />
+                <Image source={{uri: user.photo}} style={styles.profileImage} />
               </View>
             </ImageBackground>
-            <Text style={styles.nameText}>Olivia{'\n'}Mitchell</Text>
+            <Text style={styles.nameText}>{user.name}</Text>
           </View>
           <View style={{marginLeft: 25}}>
             <DrawerItemList {...props} />
@@ -103,15 +103,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   avatarContainer: {
-    height: 100,
-    width: 50,
+    height: 85,
+    width: 85,
     borderRadius: 65,
     overflow: 'hidden',
   },
   profileImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
   nameText: {
     fontSize: 30,

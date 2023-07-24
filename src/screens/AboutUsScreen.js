@@ -19,11 +19,11 @@ const AboutUsScreen = () => {
         content="info@digimarkdevelopers.com"
         image={require('../../assets/images/email.png')}
       />
-      <AboutUsCard
-        title="Website"
-        content="www.digimarkdevelopers.com"
-        image={require('../../assets/images/webicon.png')}
-      />
+          <AboutUsCard
+            title="Website"
+            content="www.digimarkdevelopers.com"
+            image={require('../../assets/images/webicon.png')}
+          />
       <AboutUsCard
         title="Contact"
         content="+92 3339048500"

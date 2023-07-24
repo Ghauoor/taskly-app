@@ -1,27 +1,88 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 import GradientButton from '../components/GradientButton';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {useDispatch, useSelector} from 'react-redux';
+import {setUser, setUserAuthId} from '../redux/slices/user';
+import firestore from '@react-native-firebase/firestore';
 
 let {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
+  const dispatch = useDispatch();
+
+  //const [user, setUser] = useState('');
+  const checkUser = async userId => {
+    try {
+      const userSnapshot = await firestore()
+        .collection('Users')
+        .doc(userId)
+        .get();
+
+      return userSnapshot.exists;
+    } catch (error) {
+      // Handle the error...
+      console.log('Error checking user:', error);
+      return false;
+    }
+  };
+
+  const createUserInFirestore = async userInfo => {
+    try {
+      const user = {
+        id: userInfo.user.id,
+        name: userInfo.user.name,
+        email: userInfo.user.email,
+        photoUrl: userInfo.user.photo,
+        //more fields...
+      };
+
+      console.log("I'm user userInfo id: ", userInfo.user.id);
+      await firestore().collection('Users').doc(userInfo.user.id).set(user);
+
+      // dispatch the user data to Redux
+      // dispatch(setUser(user));
+    } catch (error) {
+      // Handle the error...
+      console.log('Error creating user:', error);
+    }
+  };
   GoogleSignin.configure({
+    offlineAccess: false,
     webClientId:
-      '1971063694-rfp8ju9qdlfvhv56gbeqje1cbdi5pp1q.apps.googleusercontent.com',
+      '577829973059-hjsg5velr09kall8s2dk4m8sojb7clfn.apps.googleusercontent.com',
+    scopes: ['profile', 'email'],
   });
+
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      // const userInfo = await GoogleSignin.signIn();
-      // setState({userInfo});
-      const {idToken} = await GoogleSignin.signIn();
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      await signInWithCredential(googleCredential);
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      const userExists = await checkUser(userInfo.id);
+
+      dispatch(setUser(userInfo));
+
+      if (userExists) {
+        console.log('User already exists. Navigating to Home screen...');
+      } else {
+        // User does not exist, create a new Firestore document
+        await createUserInFirestore(userInfo);
+        console.log("I'm user from create user", userInfo);
+        console.log('New user created. Navigating to Home screen...');
+      }
+
+      const {idToken} = userInfo;
+      const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
+      await auth().signInWithCredential(googleCredentials);
+
+      return userInfo;
     } catch (error) {
-      console.log(error);
+      console.log('Error is ', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -33,6 +94,7 @@ const WelcomeScreen = () => {
       }
     }
   };
+
   return (
     <View style={styles.container}>
       {/* Images */}
@@ -76,10 +138,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    marginTop: 15,
+    marginTop: 5,
     height: height * 0.65,
     width: width,
-    marginBottom: 20,
+    marginBottom: 10,
+    resizeMode: 'contain',
   },
   textContainer: {
     flex: 1,

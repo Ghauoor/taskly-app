@@ -1,33 +1,70 @@
 {
   "project_info": {
-    "project_number": "1971063694",
-    "project_id": "taskly-1c926",
-    "storage_bucket": "taskly-1c926.appspot.com"
+    "project_number": "577829973059",
+    "project_id": "taskly-77f10",
+    "storage_bucket": "taskly-77f10.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1971063694:android:fee4d2bf80b8d2544a32df",
+        "mobilesdk_app_id": "1:577829973059:android:5010f9c5fca4eebb8c38f6",
         "android_client_info": {
           "package_name": "com.taskly"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1971063694-v35gonekn9vec5rec5hm4gpd8op0dcce.apps.googleusercontent.com",
+          "client_id": "577829973059-afdsp3rike50rb3e9c5qmsiec8mvnlsi.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAXtqlV1fBxuc96F565RRSiwrtqLa8dMmQ"
+          "current_key": "AIzaSyC7d8AmU5ESgDaSp34bcirImna35_UHZSk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1971063694-v35gonekn9vec5rec5hm4gpd8op0dcce.apps.googleusercontent.com",
+              "client_id": "577829973059-afdsp3rike50rb3e9c5qmsiec8mvnlsi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577829973059:android:9200e453d77f4ff68c38f6",
+        "android_client_info": {
+          "package_name": "com.tasklyApp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577829973059-0td6s8c7gj7rnasiqhd6i0030ugq8mof.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tasklyApp",
+            "certificate_hash": "d61fc46cae4f55339a000ed7e2be1954016bbf2f"
+          }
+        },
+        {
+          "client_id": "577829973059-afdsp3rike50rb3e9c5qmsiec8mvnlsi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7d8AmU5ESgDaSp34bcirImna35_UHZSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577829973059-afdsp3rike50rb3e9c5qmsiec8mvnlsi.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

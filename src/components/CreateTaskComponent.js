@@ -23,7 +23,7 @@ const CreateTaskComponent = props => {
 const styles = StyleSheet.create({
   input: {
     height: 60,
-    width: '95%',
+    width: '93%',
     marginTop: 10,
     borderWidth: 1,
     padding: 10,

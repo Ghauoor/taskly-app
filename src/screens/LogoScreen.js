@@ -76,8 +76,9 @@ const styles = StyleSheet.create({
     fontSize: 34,
   },
   logoImage: {
-    width: width * 0.6,
+    width: width * 0.8,
     height: height * 0.4,
+    resizeMode: 'contain',
   },
   dotsImageContainer: {
     marginTop: 30,
@@ -105,14 +106,20 @@ const styles = StyleSheet.create({
   textSubTextContainer: {
     marginTop: 10,
     justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
   },
   textSubText: {
     fontSize: 16,
     textAlign: 'center',
+    //alignContent: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     color: '#000000',
   },
   button: {
     marginTop: 50,
+    marginRight: 20,
   },
 });
 

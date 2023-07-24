@@ -1,17 +1,26 @@
 import React from 'react';
-import {View, StyleSheet, Text, FlatList, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  FlatList,
+  Image,
+  Dimensions,
+} from 'react-native';
 import {DrawerActions} from '@react-navigation/native';
 import {FAB} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import AppBarComponent from '../components/AppBarComponent';
 import TaskBoxComponent from '../components/TaskBoxComponent';
 import CompleteTaskListItem from '../components/CompleteTaskListItem';
 import moment from 'moment';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = ({navigation}) => {
   const currentDate = `Today ${moment().format('DD, MMM')}`;
+
+  const {user} = useSelector(state => state.userState.user);
 
   const taskListData = [
     {
@@ -25,7 +34,6 @@ const HomeScreen = ({navigation}) => {
     },
     {
       key: 'task2',
-      Date: 'Tommorow 03, Mar',
       task: 'Wake-Up',
       time: '06.00 AM',
       colors: ['#E100FF', '#FCCDB7'],
@@ -49,6 +57,15 @@ const HomeScreen = ({navigation}) => {
       colors: ['#EC55E1', '#5E89D4'],
       start: {x: 0, y: 1},
       end: {x: 1, y: 0},
+    },
+    {
+      key: 'task5',
+      Date: '08, Mar',
+      task: 'Wake-Up',
+      time: '06.00 AM',
+      colors: ['#556eec', '#00a6ff'],
+      start: {x: 1, y: 0},
+      end: {x: 0, y: 0},
     },
   ];
 
@@ -82,21 +99,15 @@ const HomeScreen = ({navigation}) => {
         style={styles.appBar}
       />
 
-      {/* Background Image and Text */}
       <View style={styles.backgroundContainer}>
         <View style={styles.nameTextContainer}>
-          <Text style={styles.nameText}>What's up, Olivia</Text>
+          <Text style={styles.nameText}>What's up, {user.name}</Text>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            position: 'absolute',
-            right: 50,
-            zIndex: -9999,
-          }}>
+        <View style={styles.imageBackgroundContainer}>
           <Image
             source={require('../../assets/images/bubble.png')}
-            style={styles.imageBackground}></Image>
+            style={styles.imageBackground}
+          />
         </View>
       </View>
 
@@ -118,14 +129,14 @@ const HomeScreen = ({navigation}) => {
           backgroundColor={'#BBC4D4'}
         />
       </View>
-      {/* Task List */}
+
       <FlatList
         data={taskListData}
         renderItem={renderItem}
         keyExtractor={item => item.key}
-        contentContainerStyle={{marginLeft: 18, marginTop: 10}}
+        contentContainerStyle={styles.taskListContainer}
       />
-      {/* Floating Action Button */}
+
       <LinearGradient
         colors={['#E100FF', '#7F00FF']}
         start={{x: 0, y: 0}}
@@ -134,73 +145,82 @@ const HomeScreen = ({navigation}) => {
         <FAB
           icon={({size}) => <Icon name="add" size={size} color="#FFFFFF" />}
           style={styles.fab}
-          onPress={() => navigation.navigate('CreateTask')}
+          onPress={() => navigation.navigate('CategoriesScreen')}
         />
       </LinearGradient>
     </View>
   );
 };
 
+const deviceWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   appBar: {
-    paddingLeft: 16,
+    paddingLeft: deviceWidth * 0.04,
   },
   nameText: {
-    fontSize: 35,
+    fontSize: deviceWidth * 0.08,
     color: '#111111',
     fontFamily: 'Sofia Pro',
     fontWeight: '800',
   },
   categoriesText: {
-    fontSize: 16,
-    marginLeft: 25,
-    marginTop: 40,
-    marginBottom: 20,
+    fontSize: deviceWidth * 0.04,
+    marginLeft: deviceWidth * 0.05,
+    marginTop: deviceWidth * 0.08,
+    marginBottom: deviceWidth * 0.04,
     fontWeight: 'bold',
     color: '#111',
   },
   taskBoxContainer: {
     flexDirection: 'row',
     height: '15%',
-    gap: 10,
-    marginLeft: 20,
+    gap: deviceWidth * 0.04,
+    marginLeft: deviceWidth * 0.05,
   },
   backgroundContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 20,
+    marginLeft: deviceWidth * 0.05,
   },
   nameTextContainer: {
     width: 'auto',
   },
+  imageBackgroundContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    right: deviceWidth * 0.1,
+    zIndex: -9999,
+  },
   imageBackground: {
-    height: 100,
+    height: deviceWidth * 0.4,
     flexDirection: 'row',
     resizeMode: 'contain',
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: deviceWidth * 0.1,
   },
   fabGradient: {
     position: 'absolute',
-    margin: 16,
-    right: 10,
-    bottom: 30,
-    borderRadius: 50,
+    margin: deviceWidth * 0.04,
+    right: deviceWidth * 0.03,
+    bottom: deviceWidth * 0.06,
+    borderRadius: deviceWidth * 0.3,
     overflow: 'hidden',
   },
   fab: {
     backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: deviceWidth * 0.16,
+    height: deviceWidth * 0.16,
+    borderRadius: deviceWidth * 0.06,
   },
-  taskListItem: {
-    marginTop: 50,
+  taskListContainer: {
+    marginLeft: deviceWidth * 0.04,
+    marginTop: deviceWidth * 0.02,
   },
 });
 

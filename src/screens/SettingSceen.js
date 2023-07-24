@@ -5,6 +5,7 @@ import ProfileView from '../components/ProfileView';
 import SettingsCard from '../components/SettingsCard';
 import {DrawerActions} from '@react-navigation/native';
 
+
 const SettingScreen = ({navigation}) => {
   const handleToggleMenu = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());

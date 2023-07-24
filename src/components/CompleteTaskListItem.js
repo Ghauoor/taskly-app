@@ -1,8 +1,15 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import Icon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -11,15 +18,19 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
   const toggleAccordion = () => {
     setIsExpanded(!isExpanded);
   };
-  const handleCheckboxClick = () => {
-    setChecked(prevState => !prevState);
-  };
+
+  const deviceWidth = Dimensions.get('window').width;
+  const containerWidth = deviceWidth * 0.94; // Adjust the width percentage as needed
 
   return (
     <View>
-      <Text style={styles.date}>{Date}</Text>
+      {Date && <Text style={styles.date}>{Date}</Text>}
       <TouchableOpacity
-        style={[styles.container, isExpanded ? styles.expandedContainer : null]}
+        style={[
+          styles.container,
+          isExpanded ? styles.expandedContainer : null,
+          {width: containerWidth},
+        ]}
         activeOpacity={0.8}
         onPress={toggleAccordion}>
         <View style={styles.gradientContainer}>
@@ -35,20 +46,31 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
           <View style={styles.checkboxContainer}>
             <BouncyCheckbox
               isChecked={isChecked}
-              size={20}
+              size={deviceWidth * 0.05} // Use a percentage-based size
               fillColor="#FFFFFF"
               unfillColor="#FFFFFF"
-              iconComponent={isChecked ? <Icon name="check" size={16} /> : null}
+              iconComponent={
+                isChecked ? (
+                  <FontAwesomeIcon
+                    name="check"
+                    size={deviceWidth * 0.04}
+                    color={'#7F00FF'}
+                  />
+                ) : null
+              }
               iconStyle={{
                 borderRadius: 1,
               }}
               onPress={chck => setChecked(chck)}
               innerIconStyle={{
-                borderWidth: 2,
-                borderRadius: 4,
+                borderWidth: deviceWidth * 0.005, // Use a percentage-based borderWidth
+                borderRadius: deviceWidth * 0.01, // Use a percentage-based borderRadius
                 borderColor: 'transparent',
               }}
-              style={{borderRadius: 4, marginTop: 2}}
+              style={{
+                borderRadius: deviceWidth * 0.01,
+                marginTop: deviceWidth * 0.005,
+              }}
             />
           </View>
           <View style={styles.textContent}>
@@ -58,7 +80,11 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
           <TouchableOpacity
             style={styles.iconContainer}
             onPress={toggleAccordion}>
-            <Icon name={isExpanded ? 'up' : 'down'} size={22} color="#ffffff" />
+            <Icon
+              name={isExpanded ? 'up' : 'down'}
+              size={deviceWidth * 0.04}
+              color="#ffffff"
+            />
           </TouchableOpacity>
         </View>
         {isExpanded && (
@@ -73,14 +99,13 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 380,
-    height: 90,
+    height: 80,
     marginTop: 10,
     borderRadius: 8,
     overflow: 'hidden',
   },
   expandedContainer: {
-    height: 140,
+    height: 120,
   },
   gradientContainer: {
     position: 'absolute',
@@ -98,7 +123,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: '4%',
     marginTop: 18,
   },
   checkboxContainer: {
@@ -110,13 +135,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   taskText: {
-    fontSize: 19,
+    fontSize: Dimensions.get('window').width * 0.05,
     color: '#fff',
-    marginLeft: 10,
+    marginLeft: '4%',
   },
   timeText: {
     color: '#fff',
-    marginLeft: 11,
+    marginLeft: '4%', 
   },
   iconContainer: {
     marginTop: 10,
@@ -128,10 +153,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   additionalContent: {
-    paddingHorizontal: 20,
+    paddingHorizontal: '5%', 
     paddingTop: 10,
     color: '#fff',
-    marginLeft: 45,
+    marginLeft: '12%',
   },
 });
 

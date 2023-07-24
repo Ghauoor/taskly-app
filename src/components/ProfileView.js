@@ -1,8 +1,17 @@
 import React from 'react';
-import {View, StyleSheet, Image, Text} from 'react-native';
+import {View, StyleSheet, Image, Text, Dimensions} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
 
 const ProfileView = () => {
+  const {user} = useSelector(state => state.userState.user);
+  
+  const {width, height} = Dimensions.get('window');
+
+  const responsiveProfileImageSize = Math.min(width * 0.2, height * 0.2);
+  const responsiveImageSize = Math.min(width * 0.5, height * 0.1);
+  const responsiveTextSize = Math.min(width * 0.5, 22);
+
   return (
     <LinearGradient
       colors={['#8A00FF', '#BD00FF']}
@@ -12,15 +21,26 @@ const ProfileView = () => {
       <View style={styles.wrapper}>
         <View style={styles.rowContainer}>
           <Image
-            source={require('../../assets/images/profile-image.png')}
-            style={styles.profileimage}
+            source={{uri: user.photo}}
+            style={[
+              styles.profileImage,
+              {
+                width: responsiveProfileImageSize,
+                height: responsiveProfileImageSize,
+              },
+            ]}
             resizeMode="contain"
           />
-          <Text style={styles.text}>Olivia Mitchell</Text>
+          <Text style={[styles.text, {fontSize: responsiveTextSize}]}>
+            {user.name}
+          </Text>
         </View>
         <Image
           source={require('../../assets/images/bubble.png')}
-          style={styles.image}
+          style={[
+            styles.image,
+            {width: responsiveImageSize, height: responsiveImageSize},
+          ]}
           resizeMode="contain"
         />
       </View>
@@ -30,7 +50,7 @@ const ProfileView = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '25%',
+    height: '23%',
     width: '90%',
     marginTop: 20,
     borderRadius: 18,
@@ -41,28 +61,25 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: 10,
+    marginHorizontal: '5%',
   },
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  profileimage: {
-    width: 120,
-    height: 120,
-    marginTop: 20,
-    marginRight: 10,
+  profileImage: {
+    marginTop: '15%',
+    marginRight: '8%',
   },
   image: {
-    height: 80,
-    width: 80,
-    marginTop: 6,
+    marginTop: '5%',
   },
   text: {
-    fontSize: 22,
     color: 'white',
     fontWeight: 'bold',
     marginLeft: -10,
+    marginLeft: '1%',
+    marginTop: '8%',
   },
 });
 

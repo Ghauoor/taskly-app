@@ -1,88 +1,144 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TextInput} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import Header from '../components/Header';
 import GradientButton from '../components/GradientButton';
 import CreateTaskComponent from '../components/CreateTaskComponent';
 import DatePickerComponent from '../components/DatePickerComponent';
 import TimeInputComponent from '../components/TimeInputComponent';
+import CategoryFieldComponent from '../components/CategoryFieldComponent';
+import ErrorDialog from '../components/ErrorDialog'; //
+import firestore, {firebase} from '@react-native-firebase/firestore';
+import {useSelector} from 'react-redux';
+
+const {width, height} = Dimensions.get('window');
+const aspectRatio = height / width;
 
 const CreateTaskScreen = ({navigation, route}) => {
+  const {user} = useSelector(state => state.userState.user);
   const [titleName, setTitleName] = useState('');
   const [description, setDescription] = useState('');
-  const [innerLocation, setInnerLocation] = useState('');
+  const [location, setLocation] = useState('');
   const [initialTime, setInitialTime] = useState('');
   const [endTime, setEndTime] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
-  //get the category
   let category;
   if (route.params) {
     category = route.params.category;
-    console.log('SCREEn => ', category);
+    console.log('SCREEN => ', category);
   } else {
     category = '';
   }
-  const handleSelectCategory = () => {
-    navigation.navigate('CategoriesScreen');
-  };
-  // Backbutton
+
   const handleBackIconPress = () => {
     navigation.goBack();
   };
 
-  //Tittle text field
   const handleTitleText = text => {
     console.log(text);
     setTitleName(text);
   };
 
-  // Description Text Field
   const handleDescriptionText = text => {
     console.log(text);
     setDescription(text);
   };
 
-  //initial time
   const handleInitialTime = text => {
     console.log(text);
     setInitialTime(text);
   };
 
-  //end time
   const handleEndTime = text => {
     console.log(text);
     setEndTime(text);
   };
 
+  const handleSave = async () => {
+    if (
+      !titleName ||
+      !description ||
+      !location ||
+      !initialTime ||
+      !endTime ||
+      !selectedDate
+    ) {
+      handleSetErrorMessage('All fields are required.');
+      return;
+    }
+
+    try {
+      const db = firebase.firestore();
+      const currentUserId = user.id;
+
+      // Generate a random ID for the todo item
+      const todoItemId = db.collection('Users').doc().id;
+
+      const todoItem = {
+        id: todoItemId,
+        title: titleName,
+        description: description,
+        location: location,
+        initialTime: initialTime,
+        endTime: endTime,
+        date: selectedDate,
+      };
+
+      await db
+        .collection('Users')
+        .doc(currentUserId)
+        .update({
+          todo: firestore.FieldValue.arrayUnion(todoItem),
+        });
+
+      alert('Task created successfully!');
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  };
+
+  const [errorVisible, setErrorVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSetErrorMessage = message => {
+    setErrorMessage(message);
+    setErrorVisible(true);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>{category}</Text>
       <Header
         name="Create Task"
         textStyle={styles.title}
         iconColor="#111111"
         onPress={handleBackIconPress}
+        size={22}
       />
-      {/* Select Category Button */}
       <View style={styles.buttonContainer}>
-        <GradientButton
+        <CategoryFieldComponent
           colors={['#A100FE', '#F300F0']}
           start={{x: 0, y: 1}}
           end={{x: 1, y: 2}}
-          text="Select Category"
-          onPress={handleSelectCategory}
+          text={category}
         />
       </View>
-      {/* input text */}
       <View style={styles.inputContainer}>
         <View style={styles.textFields}>
-          {/* Title */}
           <CreateTaskComponent
             title="Title"
             placeholder="Title"
             text={titleName}
             onChangeText={handleTitleText}
           />
-          {/* description */}
           <View style={styles.descriptionMargin} />
           <CreateTaskComponent
             title="Description"
@@ -90,18 +146,20 @@ const CreateTaskScreen = ({navigation, route}) => {
             text={description}
             onChangeText={handleDescriptionText}
           />
-
-          {/* Location */}
           <Text style={styles.locationText}>Location</Text>
           <TextInput
-            value={innerLocation}
-            onChangeText={setInnerLocation}
+            value={location}
+            onChangeText={setLocation}
             placeholder=" Location"
             placeholderTextColor="#B9BDCC"
           />
-          {/* Date */}
-          <DatePickerComponent title="Date" placeholder="dd/mm/yy" />
-          {/* Time input container  */}
+          <View style={{marginLeft: width * 0.01, marginBottom: height * 0.01}}>
+            <DatePickerComponent
+              title="Date"
+              placeholder="dd/mm/yy"
+              setSelectedDate={setSelectedDate}
+            />
+          </View>
           <View style={styles.timeInputContainer}>
             <TimeInputComponent
               title="Time"
@@ -109,8 +167,7 @@ const CreateTaskScreen = ({navigation, route}) => {
               text={initialTime}
               onChangeText={handleInitialTime}
             />
-            {/* Manage the inputs */}
-            <View style={{flexDirection: 'row', marginLeft: 60}}>
+            <View style={{flexDirection: 'row', marginLeft: 0.21 * width}}>
               <Text style={styles.line}>----</Text>
               <TimeInputComponent
                 placeholder="00:00 AM"
@@ -121,15 +178,25 @@ const CreateTaskScreen = ({navigation, route}) => {
           </View>
         </View>
       </View>
-      {/* Button */}
-      <View style={styles.buttonContainerSave}>
+      <View
+        style={{
+          marginBottom: 0.001 * height,
+          marginRight: width * 0.02,
+        }}>
         <GradientButton
           colors={['#F300F0', '#A100FE']}
-          start={{x: 0, y: 0}}
+          start={{x: 1, y: 0}}
           end={{x: 0, y: 0}}
           text="Save"
+          onPress={handleSave}
         />
       </View>
+
+      <ErrorDialog
+        visible={errorVisible}
+        message={errorMessage}
+        onClose={() => setErrorVisible(false)}
+      />
     </View>
   );
 };
@@ -137,55 +204,47 @@ const CreateTaskScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 2,
   },
   title: {
-    marginLeft: 60,
+    fontSize: 10 * aspectRatio,
+    marginLeft: 0.22 * width,
     color: 'black',
-  },
-  backIcon: {
-    color: '#111111',
+    fontWeight: '700',
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 5,
+    marginTop: 0.02 * height,
   },
   inputContainer: {
     flex: 1,
-    marginTop: 20,
-    marginLeft: 30,
+    marginTop: 0.03 * height,
+    marginLeft: 0.04 * width,
   },
   textFields: {
     flex: 1,
   },
   descriptionMargin: {
-    marginVertical: 5,
+    marginVertical: 0.01 * height,
   },
   locationText: {
-    marginTop: 20,
-    fontSize: 14,
+    marginTop: 0.03 * height,
+    fontSize: 7 * aspectRatio,
     fontWeight: 'bold',
     color: '#111111',
-  },
-  locationInnerText: {
-    marginLeft: 25,
-    color: '#B9BDCC',
-    marginTop: 12,
-    marginBottom: 18,
+    marginLeft: 0.01 * width,
   },
   timeInputContainer: {
     flexDirection: 'row',
-    marginTop: 10,
+    marginTop: 0.01 * height,
+    marginLeft: 0.01 * width,
   },
   line: {
     color: 'yellow',
-    fontSize: 25,
-    marginTop: 40,
-    marginRight: 25,
-  },
-  buttonContainerSave: {
-    marginTop: 20,
-    marginBottom: 5,
-    marginLeft: 10,
+    fontSize: 10 * aspectRatio,
+    marginTop: 0.05 * height,
+    marginRight: 0.08 * width,
+    fontWeight: 'bold',
   },
 });
 

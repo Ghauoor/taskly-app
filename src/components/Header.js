@@ -10,6 +10,7 @@ const Header = ({
   iconStyle,
   textStyle,
   iconColor,
+  size,
 }) => {
   const handleNavigation = () => {
     if (onPress) {
@@ -22,7 +23,7 @@ const Header = ({
       <TouchableOpacity
         onPress={handleNavigation}
         style={{...styles.iconContainer, iconStyle}}>
-        <Icon name="arrowleft" size={30} color={iconColor} />
+        <Icon name="arrowleft" size={size} color={iconColor} />
       </TouchableOpacity>
       <Text style={[styles.title, textStyle]}>{name}</Text>
     </View>
