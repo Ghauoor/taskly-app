@@ -1,21 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
 import GradientButton from '../components/GradientButton';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
-import {useDispatch, useSelector} from 'react-redux';
-import {setUser, setUserAuthId} from '../redux/slices/user';
+import {useDispatch} from 'react-redux';
+import {setUser} from '../redux/slices/user';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
 let {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
   const dispatch = useDispatch();
 
-  //const [user, setUser] = useState('');
   const checkUser = async userId => {
     try {
       const userSnapshot = await firestore()
@@ -51,6 +50,7 @@ const WelcomeScreen = () => {
       console.log('Error creating user:', error);
     }
   };
+
   GoogleSignin.configure({
     offlineAccess: false,
     webClientId:
@@ -63,17 +63,17 @@ const WelcomeScreen = () => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
-      const userExists = await checkUser(userInfo.id);
+      const userExists = await checkUser(userInfo.user.id);
 
+      // set data to the redux user 
       dispatch(setUser(userInfo));
 
-      if (userExists) {
-        console.log('User already exists. Navigating to Home screen...');
-      } else {
-        // User does not exist, create a new Firestore document
+      if (!userExists) {
         await createUserInFirestore(userInfo);
-        console.log("I'm user from create user", userInfo);
+
         console.log('New user created. Navigating to Home screen...');
+      } else {
+        console.log('User already exists. Navigating to Home screen...');
       }
 
       const {idToken} = userInfo;

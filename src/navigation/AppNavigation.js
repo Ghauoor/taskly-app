@@ -195,7 +195,7 @@ function AppNavigation() {
 }
 export function FullStack() {
   const user = useSelector(state => state.userState.user);
-  console.log("I'm user", user);
+  //console.log("I'm user", user);
 
   return (
     <NavigationContainer>

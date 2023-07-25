@@ -6,6 +6,8 @@ import {
   TextInput,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
+  KeyboardAvoidingView, 
 } from 'react-native';
 import Header from '../components/Header';
 import GradientButton from '../components/GradientButton';
@@ -13,7 +15,7 @@ import CreateTaskComponent from '../components/CreateTaskComponent';
 import DatePickerComponent from '../components/DatePickerComponent';
 import TimeInputComponent from '../components/TimeInputComponent';
 import CategoryFieldComponent from '../components/CategoryFieldComponent';
-import ErrorDialog from '../components/ErrorDialog'; //
+import ErrorDialog from '../components/ErrorDialog';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import {useSelector} from 'react-redux';
 
@@ -82,6 +84,7 @@ const CreateTaskScreen = ({navigation, route}) => {
       const todoItemId = db.collection('Users').doc().id;
 
       const todoItem = {
+        categoryName: category,
         id: todoItemId,
         title: titleName,
         description: description,
@@ -115,89 +118,92 @@ const CreateTaskScreen = ({navigation, route}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Header
-        name="Create Task"
-        textStyle={styles.title}
-        iconColor="#111111"
-        onPress={handleBackIconPress}
-        size={22}
-      />
-      <View style={styles.buttonContainer}>
-        <CategoryFieldComponent
-          colors={['#A100FE', '#F300F0']}
-          start={{x: 0, y: 1}}
-          end={{x: 1, y: 2}}
-          text={category}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <View style={styles.textFields}>
-          <CreateTaskComponent
-            title="Title"
-            placeholder="Title"
-            text={titleName}
-            onChangeText={handleTitleText}
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}>
+      <ScrollView contentContainerStyle={styles.scrollContentContainer}>
+        <View style={styles.container}>
+          <Header
+            name="Create Task"
+            textStyle={styles.title}
+            iconColor="#111111"
+            onPress={handleBackIconPress}
+            size={22}
           />
-          <View style={styles.descriptionMargin} />
-          <CreateTaskComponent
-            title="Description"
-            placeholder="Description"
-            text={description}
-            onChangeText={handleDescriptionText}
-          />
-          <Text style={styles.locationText}>Location</Text>
-          <TextInput
-            value={location}
-            onChangeText={setLocation}
-            placeholder=" Location"
-            placeholderTextColor="#B9BDCC"
-          />
-          <View style={{marginLeft: width * 0.01, marginBottom: height * 0.01}}>
-            <DatePickerComponent
-              title="Date"
-              placeholder="dd/mm/yy"
-              setSelectedDate={setSelectedDate}
+          <View style={styles.catContainer}>
+            <CategoryFieldComponent
+              colors={['#A100FE', '#F300F0']}
+              start={{x: 0, y: 1}}
+              end={{x: 1, y: 2}}
+              text={category}
             />
           </View>
-          <View style={styles.timeInputContainer}>
-            <TimeInputComponent
-              title="Time"
-              placeholder="00:00 AM"
-              text={initialTime}
-              onChangeText={handleInitialTime}
-            />
-            <View style={{flexDirection: 'row', marginLeft: 0.21 * width}}>
-              <Text style={styles.line}>----</Text>
-              <TimeInputComponent
-                placeholder="00:00 AM"
-                text={endTime}
-                onChangeText={handleEndTime}
+          <View style={styles.inputContainer}>
+            <View style={styles.textFields}>
+              <CreateTaskComponent
+                title="Title"
+                placeholder="Title"
+                text={titleName}
+                onChangeText={handleTitleText}
               />
+              <View style={styles.descriptionMargin} />
+              <CreateTaskComponent
+                title="Description"
+                placeholder="Description"
+                text={description}
+                onChangeText={handleDescriptionText}
+              />
+              <Text style={styles.locationText}>Location</Text>
+              <TextInput
+                value={location}
+                onChangeText={setLocation}
+                placeholder=" Location"
+                placeholderTextColor="#B9BDCC"
+              />
+              <View
+                style={{marginLeft: width * 0.01, marginBottom: height * 0.01}}>
+                <DatePickerComponent
+                  title="Date"
+                  placeholder="dd/mm/yy"
+                  setSelectedDate={setSelectedDate}
+                />
+              </View>
+              <View style={styles.timeInputContainer}>
+                <TimeInputComponent
+                  title="Time"
+                  placeholder="00:00 AM"
+                  text={initialTime}
+                  onChangeText={handleInitialTime}
+                />
+                <View style={{flexDirection: 'row', marginLeft: 0.21 * width}}>
+                  <Text style={styles.line}>----</Text>
+                  <TimeInputComponent
+                    placeholder="00:00 AM"
+                    text={endTime}
+                    onChangeText={handleEndTime}
+                  />
+                </View>
+              </View>
             </View>
           </View>
+          <View style={styles.buttonContainer}>
+            <GradientButton
+              colors={['#F300F0', '#A100FE']}
+              start={{x: 1, y: 0}}
+              end={{x: 0, y: 0}}
+              text="Save"
+              onPress={handleSave}
+            />
+          </View>
+          <ErrorDialog
+            visible={errorVisible}
+            message={errorMessage}
+            onClose={() => setErrorVisible(false)}
+          />
         </View>
-      </View>
-      <View
-        style={{
-          marginBottom: 0.001 * height,
-          marginRight: width * 0.02,
-        }}>
-        <GradientButton
-          colors={['#F300F0', '#A100FE']}
-          start={{x: 1, y: 0}}
-          end={{x: 0, y: 0}}
-          text="Save"
-          onPress={handleSave}
-        />
-      </View>
-
-      <ErrorDialog
-        visible={errorVisible}
-        message={errorMessage}
-        onClose={() => setErrorVisible(false)}
-      />
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -212,7 +218,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
   },
-  buttonContainer: {
+  catContainer: {
     alignItems: 'center',
     marginTop: 0.02 * height,
   },
@@ -245,6 +251,13 @@ const styles = StyleSheet.create({
     marginTop: 0.05 * height,
     marginRight: 0.08 * width,
     fontWeight: 'bold',
+  },
+  scrollContentContainer: {
+    flexGrow: 1,
+  },
+  buttonContainer: {
+    marginBottom: 0.001 * height,
+    marginRight: width * 0.02,
   },
 });
 

@@ -18,7 +18,6 @@ import {useSelector} from 'react-redux';
 
 const CustomDrawer = props => {
   const {user} = useSelector(state => state.userState.user);
-  console.log("I'm groot", user);
   const drawerStatus = useDrawerStatus();
 
   const handleDrawerClose = () => {
