@@ -3,13 +3,13 @@ import {Surface, Text} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const TaskText = () => (
+const TaskText = ({numberOfTasks}) => (
   <LinearGradient
     colors={['#9C00FF', '#BB00FF']}
     start={{x: 0, y: 0}}
     end={{x: 1, y: 1}}
     style={style.linearGradient}>
-    <Text style={style.text}>3</Text>
+    <Text style={style.text}>{numberOfTasks}</Text>
   </LinearGradient>
 );
 

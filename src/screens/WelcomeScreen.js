@@ -1,5 +1,13 @@
-import React from 'react';
-import {StyleSheet, View, Text, Image, Dimensions} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+  Modal,
+} from 'react-native';
 import GradientButton from '../components/GradientButton';
 import {
   GoogleSignin,
@@ -13,23 +21,25 @@ import auth from '@react-native-firebase/auth';
 let {width, height} = Dimensions.get('window');
 
 const WelcomeScreen = () => {
+  const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
+  //* check if the user is already exist in the collection or not...
   const checkUser = async userId => {
     try {
       const userSnapshot = await firestore()
         .collection('Users')
         .doc(userId)
         .get();
-
       return userSnapshot.exists;
     } catch (error) {
-      // Handle the error...
       console.log('Error checking user:', error);
       return false;
     }
   };
 
+  //* creating user in firebase
   const createUserInFirestore = async userInfo => {
     try {
       const user = {
@@ -37,20 +47,18 @@ const WelcomeScreen = () => {
         name: userInfo.user.name,
         email: userInfo.user.email,
         photoUrl: userInfo.user.photo,
-        //more fields...
+        //*more fields...
       };
 
-      console.log("I'm user userInfo id: ", userInfo.user.id);
       await firestore().collection('Users').doc(userInfo.user.id).set(user);
-
       // dispatch the user data to Redux
       // dispatch(setUser(user));
     } catch (error) {
-      // Handle the error...
       console.log('Error creating user:', error);
     }
   };
 
+  //* google sign in config
   GoogleSignin.configure({
     offlineAccess: false,
     webClientId:
@@ -58,19 +66,23 @@ const WelcomeScreen = () => {
     scopes: ['profile', 'email'],
   });
 
+  //* method for google signin
   const signIn = async () => {
     try {
+      //? set the activiy indicator
+      setModalVisible(true);
+      setLoading(true);
+
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       console.log(userInfo);
       const userExists = await checkUser(userInfo.user.id);
 
-      // set data to the redux user 
+      //? set data to the redux user
       dispatch(setUser(userInfo));
 
       if (!userExists) {
         await createUserInFirestore(userInfo);
-
         console.log('New user created. Navigating to Home screen...');
       } else {
         console.log('User already exists. Navigating to Home screen...');
@@ -80,8 +92,14 @@ const WelcomeScreen = () => {
       const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredentials);
 
+      //? remove the user
+      setLoading(false);
+      setModalVisible(false);
+
       return userInfo;
     } catch (error) {
+      setLoading(false);
+      setModalVisible(false);
       console.log('Error is ', error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -96,14 +114,12 @@ const WelcomeScreen = () => {
   };
 
   return (
+    // main container
     <View style={styles.container}>
-      {/* Images */}
       <Image
         source={require('../../assets/images/bg-welcome.png')}
         style={styles.image}
       />
-
-      {/* Texts */}
       <View style={styles.textContainer}>
         <Text style={styles.textHeading}>
           Complete Your Every Important Task
@@ -114,8 +130,7 @@ const WelcomeScreen = () => {
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </Text>
         </View>
-
-        {/* Button Component*/}
+        {/* Grdient button */}
         <View style={styles.buttonContainer}>
           <GradientButton
             colors={['#A100FE', '#F300F0']}
@@ -127,6 +142,19 @@ const WelcomeScreen = () => {
           />
         </View>
       </View>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}>
+        {/* ActivityIndicator */}
+        <View style={styles.modalContainer}>
+          <ActivityIndicator size="large" color="#cb16cb" />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -169,6 +197,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: 'center',
     marginBottom: 18,
+  },
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(243, 234, 234, 0.5)',
   },
 });
 

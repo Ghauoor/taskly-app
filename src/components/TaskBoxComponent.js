@@ -1,14 +1,16 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const TaskBoxComponent = ({text, subText, backgroundColor}) => {
+const TaskBoxComponent = ({text, subText, backgroundColor, onPress}) => {
   return (
-    <View style={[styles.dateContainer, {backgroundColor}]}>
-      <View style={styles.textContainer}>
-        <Text style={styles.text}>{text}</Text>
-        <Text style={styles.subText}>{subText}</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={[styles.dateContainer, {backgroundColor}]}>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{text}</Text>
+          <Text style={styles.subText}>{subText}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -32,7 +34,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 10,

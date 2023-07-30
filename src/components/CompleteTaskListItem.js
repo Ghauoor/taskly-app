@@ -11,17 +11,25 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
-const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
+const CompleteTaskListItem = ({
+  Date,
+  task,
+  time,
+  colors,
+  start,
+  end,
+  additionalContent,
+  onPress,
+  isChecked,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isChecked, setChecked] = useState(false);
 
   const toggleAccordion = () => {
     setIsExpanded(!isExpanded);
   };
 
   const deviceWidth = Dimensions.get('window').width;
-  const containerWidth = deviceWidth * 0.94; // Adjust the width percentage as needed
-
+  const containerWidth = deviceWidth * 0.94;
   return (
     <View>
       {Date && <Text style={styles.date}>{Date}</Text>}
@@ -46,7 +54,7 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
           <View style={styles.checkboxContainer}>
             <BouncyCheckbox
               isChecked={isChecked}
-              size={deviceWidth * 0.05} // Use a percentage-based size
+              size={deviceWidth * 0.05}
               fillColor="#FFFFFF"
               unfillColor="#FFFFFF"
               iconComponent={
@@ -61,10 +69,10 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
               iconStyle={{
                 borderRadius: 1,
               }}
-              onPress={chck => setChecked(chck)}
+              onPress={() => onPress(!isChecked)}
               innerIconStyle={{
-                borderWidth: deviceWidth * 0.005, // Use a percentage-based borderWidth
-                borderRadius: deviceWidth * 0.01, // Use a percentage-based borderRadius
+                borderWidth: deviceWidth * 0.005,
+                borderRadius: deviceWidth * 0.01,
                 borderColor: 'transparent',
               }}
               style={{
@@ -73,10 +81,12 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
               }}
             />
           </View>
+          {/* Both text context goes here */}
           <View style={styles.textContent}>
             <Text style={styles.taskText}>{task}</Text>
             <Text style={styles.timeText}>{time}</Text>
           </View>
+          {/* Toggle the icon */}
           <TouchableOpacity
             style={styles.iconContainer}
             onPress={toggleAccordion}>
@@ -88,9 +98,7 @@ const CompleteTaskListItem = ({Date, task, time, colors, start, end}) => {
           </TouchableOpacity>
         </View>
         {isExpanded && (
-          <Text style={styles.additionalContent}>
-            Additional content goes here...
-          </Text>
+          <Text style={styles.additionalContent}>{additionalContent}</Text>
         )}
       </TouchableOpacity>
     </View>
@@ -141,7 +149,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     color: '#fff',
-    marginLeft: '4%', 
+    marginLeft: '4%',
   },
   iconContainer: {
     marginTop: 10,
@@ -153,7 +161,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   additionalContent: {
-    paddingHorizontal: '5%', 
+    paddingHorizontal: '5%',
     paddingTop: 10,
     color: '#fff',
     marginLeft: '12%',

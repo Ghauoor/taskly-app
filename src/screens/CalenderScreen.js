@@ -1,34 +1,73 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import AppBarComponent from '../components/AppBarComponent';
-
+import {DrawerActions} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 import TaskText from '../components/TaskText';
 import {FlatList} from 'react-native';
+import {firebase} from '@react-native-firebase/firestore';
 
-const CalendarScreen = () => {
-  const DATA = [
-    {
-      id: 1,
-      task: 'Play Takken 7',
-      time: '7:00Am - 8:00',
-      place: 'Gaming Center',
-    },
-    {
-      id: 3,
-      task: 'Coding',
-      time: '11:00Am - 2:00',
-      place: 'Home',
-    },
-  ];
-  const currentDate = moment().format('MMMM Do, YYYY');
+const CalendarScreen = ({navigation}) => {
+  const [todoList, setTodoList] = useState([]);
+  const [taskCount, setTaskCount] = useState(0); // State to hold the task count
+
+  // toggle the drawer
+  const handleToggleMenu = () => {
+    navigation.dispatch(DrawerActions.toggleDrawer());
+  };
+
+  const {user} = useSelector(state => state.userState.user);
+  const currentDate = moment().format('YYYY-MM-DD');
+  const calendertDate = moment().format('MMMM Do, YYYY');
+
+  //fetch the data from firebase
+
+  useEffect(() => {
+    const db = firebase.firestore();
+    const currentUserId = user.id;
+
+    const unsubscribe = db
+      .collection('Users')
+      .doc(currentUserId)
+      .onSnapshot(
+        snapshot => {
+          if (snapshot.exists) {
+            const userData = snapshot.data();
+            const todoData = userData.todo || [];
+            // Convert the date format to 'YYYY-MM-DD'
+            const formattedTodoData = todoData.map(task => ({
+              ...task,
+              date: moment(task.date.toDate()).format('YYYY-MM-DD'),
+            }));
+            setTodoList(formattedTodoData);
+          } else {
+            console.log('User document does not exist.');
+          }
+        },
+        error => {
+          console.error('Error getting user document:', error);
+        },
+      );
+
+    return () => unsubscribe();
+  }, [user.id]);
+
+  // Calculate the task count for the current date
+  useEffect(() => {
+    const taskCountForCurrentDate = todoList.filter(
+      task => task.date === currentDate,
+    ).length;
+    setTaskCount(taskCountForCurrentDate);
+  }, [todoList, currentDate]);
+
+  //calender date
+
+  console.log(currentDate);
 
   const marked = {
-    '2023-07-09': {marked: true},
-    '2023-07-08': {marked: true},
-    '2023-07-07': {marked: true},
-    '2023-07-10': {
+    [currentDate]: {
       marked: true,
       selected: true,
       selectedColor: '#9C00FF',
@@ -38,13 +77,27 @@ const CalendarScreen = () => {
   };
 
   //Render item func
-  const renderItem = ({item}) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.mainText}>{item.task}</Text>
-      <Text
-        style={styles.subText}>{`•  ${item.time}   |   ${item.place}`}</Text>
-    </View>
-  );
+  const renderItem = ({item}) => {
+    const initialTime = new Date(item.initialTime._seconds * 1000);
+    const endTime = new Date(item.initialTime._seconds * 1000);
+    const formattedInitialTime = initialTime.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const formattedEndTime = endTime.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return (
+      <View style={styles.itemContainer}>
+        <Text style={styles.mainText}>{item.title}</Text>
+        <Text
+          style={
+            styles.subText
+          }>{`•  ${formattedInitialTime} - ${formattedEndTime}   |   ${item.location}`}</Text>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -52,10 +105,11 @@ const CalendarScreen = () => {
         title="Calendar"
         style={styles.appBar}
         showSearchIcon={true}
+        handleToggleMenu={handleToggleMenu}
       />
       <View style={styles.dateContainer}>
         {/* Date  */}
-        <Text style={styles.dateText}>{currentDate}</Text>
+        <Text style={styles.dateText}>{calendertDate}</Text>
       </View>
       {/* Calendar */}
       <View style={styles.calendarContainer}>
@@ -74,12 +128,13 @@ const CalendarScreen = () => {
         {/* Task Text */}
         <View style={styles.textBoxStyle}>
           <Text style={styles.text}>Task List</Text>
-          <TaskText />
+          <TaskText numberOfTasks={taskCount} />
         </View>
         {/* Flat List */}
         <View style={styles.listContainer}>
           <FlatList
-            data={DATA}
+            data={todoList}
+            showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id.toString()}
             renderItem={renderItem}
             contentContainerStyle={styles.flatItemsStyle}

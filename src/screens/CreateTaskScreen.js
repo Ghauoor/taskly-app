@@ -7,7 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
-  KeyboardAvoidingView, 
+  KeyboardAvoidingView,
 } from 'react-native';
 import Header from '../components/Header';
 import GradientButton from '../components/GradientButton';
@@ -27,8 +27,8 @@ const CreateTaskScreen = ({navigation, route}) => {
   const [titleName, setTitleName] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [initialTime, setInitialTime] = useState('');
-  const [endTime, setEndTime] = useState('');
+  const [initialTime, setInitialTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   let category;
@@ -92,6 +92,7 @@ const CreateTaskScreen = ({navigation, route}) => {
         initialTime: initialTime,
         endTime: endTime,
         date: selectedDate,
+        isSelected: false,
       };
 
       await db
@@ -171,17 +172,18 @@ const CreateTaskScreen = ({navigation, route}) => {
               </View>
               <View style={styles.timeInputContainer}>
                 <TimeInputComponent
-                  title="Time"
-                  placeholder="00:00 AM"
                   text={initialTime}
                   onChangeText={handleInitialTime}
+                  time={initialTime}
+                  setTime={setInitialTime}
                 />
-                <View style={{flexDirection: 'row', marginLeft: 0.21 * width}}>
+                <View style={{flexDirection: 'row', marginLeft: 0.2 * width}}>
                   <Text style={styles.line}>----</Text>
                   <TimeInputComponent
-                    placeholder="00:00 AM"
                     text={endTime}
                     onChangeText={handleEndTime}
+                    time={endTime}
+                    setTime={setEndTime}
                   />
                 </View>
               </View>
@@ -248,8 +250,8 @@ const styles = StyleSheet.create({
   line: {
     color: 'yellow',
     fontSize: 10 * aspectRatio,
-    marginTop: 0.05 * height,
-    marginRight: 0.08 * width,
+    marginTop: 0.06 * height,
+    marginRight: 0.07 * width,
     fontWeight: 'bold',
   },
   scrollContentContainer: {
@@ -257,7 +259,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginBottom: 0.001 * height,
-    marginRight: width * 0.02,
+    //marginRight: width * 0.02,
   },
 });
 
