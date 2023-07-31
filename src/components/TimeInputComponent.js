@@ -15,13 +15,7 @@ const TimeInputComponent = props => {
         }}>
         <Text style={styles.text}>{props.title}</Text>
         {/* Input field */}
-        <Text
-          style={styles.input}
-          //placeholder={props.placeholder}
-          //onChangeText={props.onChangeText}
-          //value={props.text}
-          //keyboardType="number-pad"
-        >
+        <Text style={styles.input}>
           {new Date(props.time)
             ? new Date(props.time).toLocaleTimeString()
             : 'Select Time'}

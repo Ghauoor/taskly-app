@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import {
   View,
   StyleSheet,
@@ -18,16 +18,31 @@ import moment from 'moment';
 import {useSelector} from 'react-redux';
 import {firebase} from '@react-native-firebase/firestore';
 
-/*todo:
-//! manage the state of check boxes
-//! header component
-*/
-
 const HomeScreen = ({navigation}) => {
   const currentDate = `Today ${moment().format('DD, MMM')}`;
   const checkDate = moment().format('DD, MMM');
 
   const {user} = useSelector(state => state.userState.user);
+  // colors
+  const randomColor = useMemo(
+    () => ['#2D033B', '#C147E9', '#E5B8F4', '#810CA8'],
+    [],
+  );
+  //* list of category colors
+  let categoryColors = ['#DB94D4', '#FCCDB7', '#BBC4D4', '#d3acd0', '#84dbcc'];
+
+  const randomColorPicker = colors => {
+    const colorOneIndex = Math.floor(Math.random() * colors.length);
+    const colorOne = colors.splice(colorOneIndex, 1)[0];
+    const colorTwoIndex = Math.floor(Math.random() * colors.length);
+    const colorTwo = colors[colorTwoIndex];
+    return [colorOne, colorTwo];
+  };
+
+  //random value
+  const randomValue = () => {
+    return Math.round(Math.random());
+  };
 
   //todo local
   const [todoList, setTodoList] = useState([]);
@@ -35,6 +50,7 @@ const HomeScreen = ({navigation}) => {
   const [filteredTasks, setFilteredTasks] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
+  // main data fetch
   useEffect(() => {
     const db = firebase.firestore();
     const currentUserId = user.id;
@@ -67,30 +83,6 @@ const HomeScreen = ({navigation}) => {
 
     return () => unsubscribe();
   }, [user.id]); // will run when the user is changed
-
-  // colors
-  const randomColor = [
-    '#A100FE',
-    '#7DD3FC',
-    '#fef08a',
-    '#c4b5fd',
-    '#fecdd3',
-    '#4d41d5',
-  ];
-
-  const randomColorPicker = () => {
-    const colors = [...randomColor];
-    const colorOneIndex = Math.floor(Math.random() * colors.length);
-    const colorOne = colors.splice(colorOneIndex, 1)[0];
-    const colorTwoIndex = Math.floor(Math.random() * colors.length);
-    const colorTwo = colors[colorTwoIndex];
-    return [colorOne, colorTwo];
-  };
-
-  //random value
-  const randomValue = () => {
-    return Math.round(Math.random());
-  };
 
   //* Function to handle checkbox press
   const handleCheckboxPress = (index, isSelected) => {
@@ -140,7 +132,7 @@ const HomeScreen = ({navigation}) => {
         ? `Today ${moment(item.date.toDate()).format('DD, MMM')}`
         : fDate;
 
-    const [colorOne, colorTwo] = randomColorPicker();
+    const [colorOne, colorTwo] = randomColorPicker([...randomColor]);
     const randomStart = {x: 0, y: 1};
     const randomEnd = {x: 1, y: randomValue()};
 
@@ -168,9 +160,6 @@ const HomeScreen = ({navigation}) => {
     }
     return acc;
   }, {});
-
-  //* list of category colors
-  let categoryColors = ['#DB94D4', '#FCCDB7', '#BBC4D4', '#d3acd0', '#84dbcc'];
 
   //* Render method for the category
   const renderTaskBoxItem = ({item, index}) => {

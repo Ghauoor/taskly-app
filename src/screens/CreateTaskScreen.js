@@ -170,14 +170,16 @@ const CreateTaskScreen = ({navigation, route}) => {
                   setSelectedDate={setSelectedDate}
                 />
               </View>
+
               <View style={styles.timeInputContainer}>
                 <TimeInputComponent
+                  title="Time"
                   text={initialTime}
                   onChangeText={handleInitialTime}
                   time={initialTime}
                   setTime={setInitialTime}
                 />
-                <View style={{flexDirection: 'row', marginLeft: 0.2 * width}}>
+                <View style={{flexDirection: 'row', marginLeft: 0.13 * width}}>
                   <Text style={styles.line}>----</Text>
                   <TimeInputComponent
                     text={endTime}
