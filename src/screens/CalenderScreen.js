@@ -69,22 +69,28 @@ const CalendarScreen = ({navigation}) => {
     task => task.date === currentDate,
   );
 
-  const marked = {
-    '2023-08-02': {
-      marked: true,
-      selected: true,
-      selectedColor: '#9C00FF',
-      selectedTextColor: '#fff',
-      dotColor: 'white',
-    },
-    [currentDate]: {
-      marked: true,
-      selected: true,
-      selectedColor: '#9C00FF',
-      selectedTextColor: '#fff',
-      dotColor: 'white',
-    },
+  const getMarkedDates = () => {
+    const markedDates = {};
+
+    todoList.forEach(task => {
+      const taskDate = task.date;
+      markedDates[taskDate] = {
+        marked: true,
+        dotColor: '#9C00FF',
+      };
+      markedDates[currentDate] = {
+        marked: true,
+        selected: true,
+        selectedColor: '#9C00FF',
+        selectedTextColor: '#fff',
+        dotColor: 'white',
+      };
+    });
+
+    return markedDates;
   };
+
+  const markedDate = getMarkedDates();
 
   //Render item func
   const renderItem = ({item}) => {
@@ -127,7 +133,7 @@ const CalendarScreen = ({navigation}) => {
         <Calendar
           hideExtraDays
           renderHeader={() => {}}
-          markedDates={marked}
+          markedDates={markedDate}
           hideArrows
           theme={{
             calendarBackground: 'transparent',
