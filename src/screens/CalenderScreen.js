@@ -12,6 +12,7 @@ import {firebase} from '@react-native-firebase/firestore';
 const CalendarScreen = ({navigation}) => {
   const [todoList, setTodoList] = useState([]);
   const [taskCount, setTaskCount] = useState(0); // State to hold the task count
+  const [taskDate, setTaskDate] = useState([]); // State to hold the dates for tasks.
 
   // toggle the drawer
   const handleToggleMenu = () => {
@@ -41,6 +42,7 @@ const CalendarScreen = ({navigation}) => {
               ...task,
               date: moment(task.date.toDate()).format('YYYY-MM-DD'),
             }));
+            // setTaskDate(date);
             setTodoList(formattedTodoData);
           } else {
             console.log('User document does not exist.');
@@ -62,11 +64,19 @@ const CalendarScreen = ({navigation}) => {
     setTaskCount(taskCountForCurrentDate);
   }, [todoList, currentDate]);
 
-  //calender date
-
-  console.log(currentDate);
+  // Filter tasks for the current date
+  const tasksForCurrentDate = todoList.filter(
+    task => task.date === currentDate,
+  );
 
   const marked = {
+    '2023-08-02': {
+      marked: true,
+      selected: true,
+      selectedColor: '#9C00FF',
+      selectedTextColor: '#fff',
+      dotColor: 'white',
+    },
     [currentDate]: {
       marked: true,
       selected: true,
@@ -88,6 +98,7 @@ const CalendarScreen = ({navigation}) => {
       hour: '2-digit',
       minute: '2-digit',
     });
+
     return (
       <View style={styles.itemContainer}>
         <Text style={styles.mainText}>{item.title}</Text>
@@ -133,7 +144,7 @@ const CalendarScreen = ({navigation}) => {
         {/* Flat List */}
         <View style={styles.listContainer}>
           <FlatList
-            data={todoList}
+            data={tasksForCurrentDate}
             showsVerticalScrollIndicator={false}
             keyExtractor={item => item.id.toString()}
             renderItem={renderItem}

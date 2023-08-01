@@ -23,9 +23,9 @@ const HomeScreen = ({navigation}) => {
   const checkDate = moment().format('DD, MMM');
 
   const {user} = useSelector(state => state.userState.user);
-  // colors
+  //* colors
   const randomColor = useMemo(
-    () => ['#2D033B', '#C147E9', '#E5B8F4', '#810CA8'],
+    () => ['#360845', '#C147E9', '#E5B8F4', '#810CA8', '#9200FA'],
     [],
   );
   //* list of category colors
@@ -151,7 +151,7 @@ const HomeScreen = ({navigation}) => {
     );
   };
 
-  // Group tasks by categoryName to get unique categories
+  //* Group tasks by categoryName to get unique categories
   const groupedTasks = todoList.reduce((acc, task) => {
     if (!acc[task.categoryName]) {
       acc[task.categoryName] = [task];
@@ -194,7 +194,9 @@ const HomeScreen = ({navigation}) => {
         <TaskBoxComponent
           text={item.categoryName}
           subText={`${totalTasks} Tasks`}
-          backgroundColor={bgOne}
+          backgroundColor={
+            selectedCategory === item.categoryName ? '#FFA500' : bgOne
+          }
           onPress={handleTaskBoxPress}
         />
       </View>

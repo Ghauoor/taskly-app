@@ -5,7 +5,6 @@ import {
   Text,
   TextInput,
   Dimensions,
-  TouchableOpacity,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -18,6 +17,8 @@ import CategoryFieldComponent from '../components/CategoryFieldComponent';
 import ErrorDialog from '../components/ErrorDialog';
 import firestore, {firebase} from '@react-native-firebase/firestore';
 import {useSelector} from 'react-redux';
+import PushNotification from 'react-native-push-notification';
+import Notifications from '../constants/Notifications';
 
 const {width, height} = Dimensions.get('window');
 const aspectRatio = height / width;
@@ -101,6 +102,15 @@ const CreateTaskScreen = ({navigation, route}) => {
         .update({
           todo: firestore.FieldValue.arrayUnion(todoItem),
         });
+      // Schedule the notification for the endTime
+      const endTimeNotification = new Date(endTime);
+     // const notificationMessage = `Your task "${titleName}" is ending soon!`;
+
+      Notifications.schduleNotification(
+        endTimeNotification,
+        titleName,
+        description,
+      );
 
       alert('Task created successfully!');
       navigation.goBack();
