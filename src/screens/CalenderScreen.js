@@ -135,6 +135,7 @@ const CalendarScreen = ({navigation}) => {
           renderHeader={() => {}}
           markedDates={markedDate}
           hideArrows
+          enableSwipeMonths
           theme={{
             calendarBackground: 'transparent',
             dotColor: '#3D6F67',
