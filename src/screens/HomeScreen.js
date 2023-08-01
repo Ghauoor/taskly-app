@@ -21,6 +21,7 @@ import {firebase} from '@react-native-firebase/firestore';
 const HomeScreen = ({navigation}) => {
   const currentDate = `Today ${moment().format('DD, MMM')}`;
   const checkDate = moment().format('DD, MMM');
+  const [colorMap, setColorMap] = useState({});
 
   const {user} = useSelector(state => state.userState.user);
   //* colors
@@ -31,17 +32,17 @@ const HomeScreen = ({navigation}) => {
   //* list of category colors
   let categoryColors = ['#DB94D4', '#FCCDB7', '#BBC4D4', '#d3acd0', '#84dbcc'];
 
-  const randomColorPicker = colors => {
+  const randomColorPicker = (colors, itemId) => {
+    if (colorMap[itemId]) {
+      return colorMap[itemId];
+    }
     const colorOneIndex = Math.floor(Math.random() * colors.length);
     const colorOne = colors.splice(colorOneIndex, 1)[0];
     const colorTwoIndex = Math.floor(Math.random() * colors.length);
     const colorTwo = colors[colorTwoIndex];
-    return [colorOne, colorTwo];
-  };
-
-  //random value
-  const randomValue = () => {
-    return Math.round(Math.random());
+    const newColor = [colorOne, colorTwo];
+    setColorMap(prevColorMap => ({...prevColorMap, [itemId]: newColor}));
+    return newColor;
   };
 
   //todo local
@@ -89,11 +90,11 @@ const HomeScreen = ({navigation}) => {
     const updatedTodoList = [...todoList];
     updatedTodoList[index].isSelected = isSelected;
 
-    // Filter out the selected task and set the updated list to state
+    //* Filter out the selected task and set the updated list to state
     const updatedTaskList = updatedTodoList.filter(task => !task.isSelected);
     setTodoList(updatedTaskList);
 
-    // Save the updated data back to Firestore
+    //* Save the updated data back to Firestore
     const db = firebase.firestore();
     const currentUserId = user.id;
     db.collection('Users')
@@ -111,14 +112,14 @@ const HomeScreen = ({navigation}) => {
 
   //* Render method for the task list
   const renderItem = ({item, index}) => {
-    // get time
+    //* get time
     const initialTime = new Date(item.initialTime._seconds * 1000);
     const formattedInitialTime = initialTime.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
 
-    // get the date
+    //* get the date
     let fDate = moment(item.date.toDate()).format('DD, MMM');
     const previousItem = index > 0 ? todoList[index - 1] : null;
     const previousDate = previousItem
@@ -127,14 +128,17 @@ const HomeScreen = ({navigation}) => {
 
     const renderDate = !previousDate || fDate !== previousDate;
 
+    //* dates
     fDate =
       fDate === checkDate
         ? `Today ${moment(item.date.toDate()).format('DD, MMM')}`
         : fDate;
 
-    const [colorOne, colorTwo] = randomColorPicker([...randomColor]);
+    //* Colors
+    const [colorOne, colorTwo] = randomColorPicker([...randomColor], item.id);
+
     const randomStart = {x: 0, y: 1};
-    const randomEnd = {x: 1, y: randomValue()};
+    const randomEnd = {x: 1, y: 0};
 
     return (
       <CompleteTaskListItem
@@ -147,6 +151,7 @@ const HomeScreen = ({navigation}) => {
         additionalContent={item.description}
         isChecked={item.isSelected || false}
         onPress={chck => handleCheckboxPress(index, chck)}
+        key={index}
       />
     );
   };
@@ -198,6 +203,7 @@ const HomeScreen = ({navigation}) => {
             selectedCategory === item.categoryName ? '#FFA500' : bgOne
           }
           onPress={handleTaskBoxPress}
+          key={index}
         />
       </View>
     );
