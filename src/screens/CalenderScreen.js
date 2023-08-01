@@ -150,13 +150,17 @@ const CalendarScreen = ({navigation}) => {
         </View>
         {/* Flat List */}
         <View style={styles.listContainer}>
-          <FlatList
-            data={tasksForCurrentDate}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={item => item.id.toString()}
-            renderItem={renderItem}
-            contentContainerStyle={styles.flatItemsStyle}
-          />
+          {tasksForCurrentDate.length === 0 ? (
+            <Text style={styles.noTasksText}>No tasks for today.</Text>
+          ) : (
+            <FlatList
+              data={tasksForCurrentDate}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={item => item.id.toString()}
+              renderItem={renderItem}
+              contentContainerStyle={styles.flatItemsStyle}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -171,6 +175,13 @@ const styles = StyleSheet.create({
   },
   appBar: {
     marginLeft: 6,
+  },
+  noTasksText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#111111',
+    textAlign: 'center',
+    marginTop: 20,
   },
   dateContainer: {
     alignItems: 'flex-start',
