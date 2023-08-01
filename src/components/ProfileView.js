@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 
 const ProfileView = () => {
   const {user} = useSelector(state => state.userState.user);
-  
+
   const {width, height} = Dimensions.get('window');
 
   const responsiveProfileImageSize = Math.min(width * 0.2, height * 0.2);
@@ -72,14 +72,16 @@ const styles = StyleSheet.create({
     marginRight: '8%',
   },
   image: {
-    marginTop: '5%',
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    right: 1,
   },
   text: {
     color: 'white',
     fontWeight: 'bold',
     marginLeft: -10,
-    marginLeft: '1%',
-    marginTop: '8%',
+    marginTop: '15%',
   },
 });
 

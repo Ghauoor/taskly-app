@@ -126,8 +126,9 @@ const WelcomeScreen = () => {
         </Text>
         <View style={styles.textSubTextContainer}>
           <Text style={styles.textSubText}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Seamless Task Management: Create, edit, and organize tasks
+            effortlessly. Stay on top of your priorities with due dates and
+            reminders
           </Text>
         </View>
         {/* Grdient button */}

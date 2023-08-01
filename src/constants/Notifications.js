@@ -35,11 +35,12 @@ class Notifications {
     });
   }
 
-  schduleNotification(date, title, description) {
+  schduleNotification(date, title, description, time) {
     PushNotification.localNotificationSchedule({
       channelId: 'reminders',
       title: `🔔 Reminder! for ${title}`,
       message: description,
+      time,
       date,
     });
   }

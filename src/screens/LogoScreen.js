@@ -39,8 +39,9 @@ const LogoScreen = ({navigation}) => {
 
           <View style={styles.textSubTextContainer}>
             <Text style={styles.textSubText}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              Seamless Task Management: Create, edit, and organize tasks
+              effortlessly. Stay on top of your priorities with due dates and
+              reminders
             </Text>
             {/* Button */}
             <View style={styles.button}>
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
   textSubText: {
     fontSize: 16,
     textAlign: 'center',
-    //alignContent: 'center',
+    // alignContent: 'center',
     // justifyContent: 'center',
     // alignItems: 'center',
     color: '#000000',

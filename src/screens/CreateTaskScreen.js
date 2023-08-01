@@ -104,12 +104,14 @@ const CreateTaskScreen = ({navigation, route}) => {
         });
       // Schedule the notification for the endTime
       const endTimeNotification = new Date(endTime);
-     // const notificationMessage = `Your task "${titleName}" is ending soon!`;
+      const endDateNotification = new Date(selectedDate);
+      // const notificationMessage = `Your task "${titleName}" is ending soon!`;
 
       Notifications.schduleNotification(
-        endTimeNotification,
+        endDateNotification,
         titleName,
         description,
+        endTimeNotification,
       );
 
       alert('Task created successfully!');

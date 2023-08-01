@@ -134,11 +134,13 @@ const HomeScreen = ({navigation}) => {
         ? `Today ${moment(item.date.toDate()).format('DD, MMM')}`
         : fDate;
 
-    //* Colors
+    //* Color
     const [colorOne, colorTwo] = randomColorPicker([...randomColor], item.id);
 
     const randomStart = {x: 0, y: 1};
     const randomEnd = {x: 1, y: 0};
+
+    const isTodoListEmpty = todoList.length === 0;
 
     return (
       <CompleteTaskListItem
@@ -151,7 +153,7 @@ const HomeScreen = ({navigation}) => {
         additionalContent={item.description}
         isChecked={item.isSelected || false}
         onPress={chck => handleCheckboxPress(index, chck)}
-        key={index}
+        key={item.id}
       />
     );
   };
@@ -203,7 +205,7 @@ const HomeScreen = ({navigation}) => {
             selectedCategory === item.categoryName ? '#FFA500' : bgOne
           }
           onPress={handleTaskBoxPress}
-          key={index}
+          key={item.id}
         />
       </View>
     );
@@ -213,6 +215,8 @@ const HomeScreen = ({navigation}) => {
   const handleToggleMenu = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
+
+  const isTodoListEmpty = todoList.length === 0;
 
   return (
     <View style={styles.container}>
@@ -272,6 +276,18 @@ const HomeScreen = ({navigation}) => {
           keyExtractor={item => item.id}
           contentContainerStyle={styles.taskListContainer}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={
+            // Show this text component when todoList is empty
+            isTodoListEmpty && (
+              <View style={styles.emptyContainer}>
+                {/* <Image
+                  source={require('../../assets/images/notask.png')}
+                  style={styles.emptyImage}
+                /> */}
+                <Text style={styles.emptyText}>No tasks found.</Text>
+              </View>
+            )
+          }
         />
       )}
 
@@ -299,6 +315,22 @@ const styles = StyleSheet.create({
   },
   appBar: {
     paddingLeft: deviceWidth * 0.04,
+  },
+  emptyText: {
+    alignSelf: 'center',
+    marginTop: 20,
+    fontSize: 16,
+    color: '#111111',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  emptyImage: {
+    height: 100,
+    width: 100,
   },
   nameText: {
     fontSize: deviceWidth * 0.08,
@@ -355,7 +387,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: deviceWidth * 0.16,
     height: deviceWidth * 0.16,
-    borderRadius: deviceWidth * 0.06,
+    borderRadius: deviceWidth * 0.08,
   },
   taskListContainer: {
     marginLeft: deviceWidth * 0.04,
