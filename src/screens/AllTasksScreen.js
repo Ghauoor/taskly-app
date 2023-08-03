@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, FlatList, StyleSheet, Text, Image} from 'react-native';
+import {View, FlatList, StyleSheet, Text} from 'react-native';
 import {FAB} from 'react-native-paper';
 import AppBarComponent from '../components/AppBarComponent';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
@@ -16,9 +16,12 @@ const AllTasksScreen = ({navigation}) => {
 
   const {user} = useSelector(state => state.userState.user);
   console.log(user);
+  const emptyListText = 'No tasks found. Add some tasks!';
 
   const [taskState, setTaskState] = useState([]);
   const [todoList, setTodoList] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [filteredTodoList, setFilteredTodoList] = useState(todoList);
 
   //* get the todo array
   useEffect(() => {
@@ -48,6 +51,13 @@ const AllTasksScreen = ({navigation}) => {
 
     return () => unsubscribe();
   }, [user.id]); // will run when the user is changed
+
+  useEffect(() => {
+    const filteredList = todoList.filter(task =>
+      task.title.toLowerCase().includes(searchText.toLowerCase()),
+    );
+    setFilteredTodoList(filteredList);
+  }, [searchText, todoList]);
 
   // toggle the
   const toggleTask = index => {
@@ -109,15 +119,21 @@ const AllTasksScreen = ({navigation}) => {
         style={styles.appBar}
         showSearchIcon={true}
         handleToggleMenu={handleToggleMenu}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       {/* List of all todo's */}
       <View style={styles.listContainer}>
-        <FlatList
-          data={todoList}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.flatListContent}
-        />
+        {filteredTodoList.length > 0 ? (
+          <FlatList
+            data={filteredTodoList} // Use the filteredTodoList as the data source
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.flatListContent}
+          />
+        ) : (
+          <Text style={styles.emptyListText}>{emptyListText}</Text>
+        )}
       </View>
       {/* FAB */}
       <LinearGradient
@@ -152,6 +168,12 @@ const styles = StyleSheet.create({
   },
   flatListContent: {
     paddingHorizontal: 9,
+  },
+  emptyListText: {
+    textAlign: 'center',
+    fontSize: 18,
+    marginTop: 20,
+    color: '#888888',
   },
   item: {
     flexDirection: 'row',

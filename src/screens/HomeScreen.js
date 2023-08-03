@@ -47,9 +47,36 @@ const HomeScreen = ({navigation}) => {
 
   //todo local
   const [todoList, setTodoList] = useState([]);
-  //? fi
-  const [filteredTasks, setFilteredTasks] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [searchText, setSearchText] = useState('');
+  const [arrayToDisplay, setArrayToDisplay] = useState([]);
+
+  useEffect(() => {
+    if (selectedCategory !== '') {
+      // Filter the todoList based on the selectedCategory
+      const categoryFilterArray = todoList.filter(
+        task => task.categoryName === selectedCategory,
+      );
+
+      if (searchText !== '') {
+        // If searchText is not empty, apply search filter on the categoryFilterArray
+        const searchFilterArray = categoryFilterArray.filter(task =>
+          task.title.toLowerCase().includes(searchText.toLowerCase()),
+        );
+        setArrayToDisplay(searchFilterArray);
+      } else {
+        // If searchText is empty, show the whole categoryFilterArray
+        setArrayToDisplay(categoryFilterArray);
+      }
+    } else {
+      // If no category is selected, apply search filter on the whole todoList
+      const filteredList = todoList.filter(task =>
+        task.title.toLowerCase().includes(searchText.toLowerCase()),
+      );
+
+      setArrayToDisplay(filteredList);
+    }
+  }, [searchText, selectedCategory, todoList]);
 
   // main data fetch
   useEffect(() => {
@@ -73,6 +100,7 @@ const HomeScreen = ({navigation}) => {
             });
 
             setTodoList(todoData);
+            setArrayToDisplay(todoData);
           } else {
             console.log('User document does not exist.');
           }
@@ -83,16 +111,16 @@ const HomeScreen = ({navigation}) => {
       );
 
     return () => unsubscribe();
-  }, [user.id]); // will run when the user is changed
+  }, []); // will run when the user is changed
 
   //* Function to handle checkbox press
   const handleCheckboxPress = (index, isSelected) => {
-    const updatedTodoList = [...todoList];
+    const updatedTodoList = [...arrayToDisplay];
     updatedTodoList[index].isSelected = isSelected;
 
     //* Filter out the selected task and set the updated list to state
     const updatedTaskList = updatedTodoList.filter(task => !task.isSelected);
-    setTodoList(updatedTaskList);
+    setArrayToDisplay(updatedTaskList);
 
     //* Save the updated data back to Firestore
     const db = firebase.firestore();
@@ -175,24 +203,18 @@ const HomeScreen = ({navigation}) => {
     const totalTasks = tasksForCategory.length;
     const bgOne = categoryColors[index % categoryColors.length];
 
-    const handleTaskBoxPress = () => {
-      if (
-        selectedCategory === item.categoryName ||
-        item.categoryName === 'All'
-      ) {
-        //* "All" is clicked again, reset the filtered tasks
-        setSelectedCategory(null);
-        setFilteredTasks([]);
+    const handleTaskBoxPress = categoryName => {
+      if (selectedCategory === categoryName) {
+        // setArrayToDisplay(todoList);
+        setSelectedCategory('');
       } else {
-        if (item.categoryName === 'All') {
-          //* If the "All" category is clicked, show all tasks
-          setSelectedCategory(item.categoryName);
-          setFilteredTasks(todoList);
-        } else {
-          //* Filter tasks based on the category name
-          setSelectedCategory(item.categoryName);
-          setFilteredTasks(tasksForCategory);
-        }
+        // Filter tasks based on the category name
+        // const filteredTasks =
+        //   categoryName === 'All'
+        //     ? todoList
+        //     : todoList.filter(task => task.categoryName === categoryName);
+        //setArrayToDisplay(filteredTasks);
+        setSelectedCategory(categoryName);
       }
     };
 
@@ -204,7 +226,7 @@ const HomeScreen = ({navigation}) => {
           backgroundColor={
             selectedCategory === item.categoryName ? '#FFA500' : bgOne
           }
-          onPress={handleTaskBoxPress}
+          onPress={() => handleTaskBoxPress(item.categoryName)}
           key={item.id}
         />
       </View>
@@ -232,6 +254,8 @@ const HomeScreen = ({navigation}) => {
           },
         ]}
         style={styles.appBar}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
 
       <View style={styles.backgroundContainer}>
@@ -258,38 +282,30 @@ const HomeScreen = ({navigation}) => {
         horizontal
         style={styles.taskBoxContainer}
         showsHorizontalScrollIndicator={false}
+        key={item => item.id}
       />
 
       {/* List of Tasks  */}
-      {selectedCategory ? (
-        <FlatList
-          data={filteredTasks} //* filteredTasks state here
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.taskListContainer}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <FlatList
-          data={todoList}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.taskListContainer}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            // Show this text component when todoList is empty
-            isTodoListEmpty && (
-              <View style={styles.emptyContainer}>
-                {/* <Image
+
+      <FlatList
+        data={arrayToDisplay}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        contentContainerStyle={styles.taskListContainer}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          // Show this text component when todoList is empty
+          isTodoListEmpty && (
+            <View style={styles.emptyContainer}>
+              {/* <Image
                   source={require('../../assets/images/notask.png')}
                   style={styles.emptyImage}
                 /> */}
-                <Text style={styles.emptyText}>No tasks found.</Text>
-              </View>
-            )
-          }
-        />
-      )}
+              <Text style={styles.emptyText}>No tasks found.</Text>
+            </View>
+          )
+        }
+      />
 
       {/* FAB  */}
       <LinearGradient

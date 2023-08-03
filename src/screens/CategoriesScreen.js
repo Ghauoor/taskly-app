@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -6,6 +6,7 @@ import AppBarComponent from '../components/AppBarComponent';
 import {DrawerActions} from '@react-navigation/native';
 
 const CategoriesScreen = ({navigation}) => {
+  const [searchText, setSearchText] = useState('');
   const handleToggleMenu = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
@@ -18,6 +19,10 @@ const CategoriesScreen = ({navigation}) => {
     {id: '6', title: 'Anniversaries'},
     {id: '7', title: 'Car Maintenance'},
   ];
+
+  const filteredCategories = categories.filter(category =>
+    category.title.toLowerCase().includes(searchText.toLowerCase()),
+  );
 
   const renderItem = ({item, index}) => {
     const saveIconColor = index % 2 === 0 ? '#AB47BC' : '#D226F2';
@@ -50,10 +55,12 @@ const CategoriesScreen = ({navigation}) => {
         style={styles.appBar}
         showSearchIcon={true}
         handleToggleMenu={handleToggleMenu}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <View style={styles.listContainer}>
         <FlatList
-          data={categories}
+          data={filteredCategories}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           contentContainerStyle={styles.flatListContent}

@@ -40,7 +40,6 @@ class Notifications {
       channelId: 'reminders',
       title: `🔔 Reminder! for ${title}`,
       message: description,
-      time,
       date,
     });
   }

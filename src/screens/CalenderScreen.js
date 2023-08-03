@@ -11,13 +11,29 @@ import {firebase} from '@react-native-firebase/firestore';
 
 const CalendarScreen = ({navigation}) => {
   const [todoList, setTodoList] = useState([]);
-  const [taskCount, setTaskCount] = useState(0); // State to hold the task count
-  const [taskDate, setTaskDate] = useState([]); // State to hold the dates for tasks.
+  const [taskCount, setTaskCount] = useState(0); //* State to hold the task count
+  const [searchText, setSearchText] = useState('');
+  const [filteredTodoList, setFilteredTodoList] = useState([]);
 
   // toggle the drawer
   const handleToggleMenu = () => {
     navigation.dispatch(DrawerActions.toggleDrawer());
   };
+
+  useEffect(() => {
+    const filterTasks = () => {
+      if (searchText !== '') {
+        const filteredArray = todoList.filter(task =>
+          task.title.includes(searchText),
+        );
+        setFilteredTodoList(filteredArray);
+      } else {
+        setFilteredTodoList(todoList);
+      }
+    };
+
+    filterTasks();
+  }, [searchText, todoList]);
 
   const {user} = useSelector(state => state.userState.user);
   const currentDate = moment().format('YYYY-MM-DD');
@@ -44,6 +60,7 @@ const CalendarScreen = ({navigation}) => {
             }));
             // setTaskDate(date);
             setTodoList(formattedTodoData);
+            setFilteredTodoList(formattedTodoData);
           } else {
             console.log('User document does not exist.');
           }
@@ -123,6 +140,8 @@ const CalendarScreen = ({navigation}) => {
         style={styles.appBar}
         showSearchIcon={true}
         handleToggleMenu={handleToggleMenu}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <View style={styles.dateContainer}>
         {/* Date  */}
@@ -179,7 +198,7 @@ const styles = StyleSheet.create({
   noTasksText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#111111',
+    color: '#9C00FF',
     textAlign: 'center',
     marginTop: 20,
   },
